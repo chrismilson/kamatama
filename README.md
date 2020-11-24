@@ -1,46 +1,39 @@
-# Getting Started with Create React App
+This web application uses the
+[JMdict/EDICT](http://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project)
+and [KANJIDIC](http://www.edrdg.org/wiki/index.php/KANJIDIC_Project) dictionary
+files. These files are the property of the [Electronic Dictionary Research and
+Development Group](http://www.edrdg.org/), and are used in conformance with the
+Group's [licence](http://www.edrdg.org/edrdg/licence.html).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Kamatama Jisho
 
-## Available Scripts
+I have used the [Takoboto](http://takoboto.jp/) android app for several years.
+It is a very good dictionary for many use cases:
 
-In the project directory, you can run:
+- It has a kanji search by radicals.
+- Searching can be done in Japanese with any combination of different scripts;
+  Kanji, Hiragana, Katakana and Romaji.
+- Searching can also be done in English.
+- All searches are entered into the same single input, leading to a very simple
+  design.
 
-### `yarn start`
+I have recently become restless with the lack of modernism in the app's
+development though. I believe there are several drawbacks to the app:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- It is not available on Apple's App Store.
+- It is not particularly aesthetically pleasing.
+- The web version of the app is not available offline.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Frustration with the above drew me to develop this app. This app is based on the
+exact same dictionaries as takoboto, but is intended to be installed as a PWA
+([Progresive Web
+App](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)). The
+PWA will be installable and will provide offline functionaloty, straight from
+the browser.
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+_**NOTE:** Due to the problems associated with romanisation of Japanese (should
+スーパー be supa, suupaa, su-pa- or some combination of them?), this dictionary
+is intended for use by people who have studied some Japanese and can at least
+read kana. If you cannot read kana, [this guide to
+hiragana](https://www.tofugu.com/japanese/learn-hiragana/) on the [tofugu
+blog](https://www.tofugu.com/) is a great place to start._
