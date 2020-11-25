@@ -31,9 +31,9 @@ App](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)). The
 PWA will be installable and will provide offline functionaloty, straight from
 the browser.
 
-_**NOTE:** Due to the problems associated with romanisation of Japanese (should
-スーパー be supa, suupaa, su-pa- or some combination of them?), this dictionary
-is intended for use by people who have studied some Japanese and can at least
-read kana. If you cannot read kana, [this guide to
+_**NOTE:** Due to the problems associated with romanisation of Japanese (e.g.
+shouldスーパー be supa, suupaa, su-pa- or some combination of these?), this
+dictionary is intended for use by people who have studied some Japanese and can
+at least read kana. If you cannot read kana, [this guide to
 hiragana](https://www.tofugu.com/japanese/learn-hiragana/) on the [tofugu
 blog](https://www.tofugu.com/) is a great place to start._
