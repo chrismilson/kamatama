@@ -22,3 +22,6 @@ The dictionaries currently in use are:
 
 - [kanjidic2](http://www.edrdg.org/wiki/index.php/KANJIDIC_Project)
 - [JMdict](http://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project)
+
+Since these files are quite large, they are not stored in this repository.
+You can download them from their respective websites.
