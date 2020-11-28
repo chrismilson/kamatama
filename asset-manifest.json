@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/kamatama/static/css/main.abb185b8.chunk.css",
-    "main.js": "/kamatama/static/js/main.8ab57cc2.chunk.js",
-    "main.js.map": "/kamatama/static/js/main.8ab57cc2.chunk.js.map",
+    "main.js": "/kamatama/static/js/main.c3e50807.chunk.js",
+    "main.js.map": "/kamatama/static/js/main.c3e50807.chunk.js.map",
     "runtime-main.js": "/kamatama/static/js/runtime-main.25f13ffe.js",
     "runtime-main.js.map": "/kamatama/static/js/runtime-main.25f13ffe.js.map",
     "static/js/2.f41ed338.chunk.js": "/kamatama/static/js/2.f41ed338.chunk.js",
@@ -19,6 +19,6 @@
     "static/js/runtime-main.25f13ffe.js",
     "static/js/2.f41ed338.chunk.js",
     "static/css/main.abb185b8.chunk.css",
-    "static/js/main.8ab57cc2.chunk.js"
+    "static/js/main.c3e50807.chunk.js"
   ]
 }
