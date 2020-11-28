@@ -1,4 +1,5 @@
 import { openDB } from 'idb'
+import addAllDataToDB from './add-data'
 
 const initDB = async () => {
   return openDB('kamatama', 1, {
@@ -11,19 +12,21 @@ const initDB = async () => {
         keyPath: 'sequenceNumber'
       })
 
-      const phraseReadings = db.createObjectStore('phraseReadings', {
+      const queryStore = db.createObjectStore('queryStore', {
         keyPath: 'sequenceNumber'
       })
 
-      phraseReadings.createIndex('phraseReadings', 'reading', {
+      queryStore.createIndex('queryStore', 'values', {
         multiEntry: true
       })
 
       await Promise.all(
-        [allKanji, allPhrases, phraseReadings].map(
+        [allKanji, allPhrases, queryStore].map(
           ({ transaction }) => transaction.done
         )
       ).catch(console.error)
+
+      await addAllDataToDB(db)
 
       console.log(`Database upgraded to version ${version}`)
     }

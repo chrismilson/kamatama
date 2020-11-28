@@ -34,13 +34,16 @@ export class KamatamaJishoStore {
   }
 
   private async fetchResults() {
-    if (this.query === '') return
+    if (this.query === '') {
+      runInAction(() => {
+        this.results = []
+      })
+      return
+    }
 
     const requestID = ++this.request
 
-    const sequenceNumbers = await this.fetchSequenceNumbersForProperty(
-      'phraseReadings'
-    )
+    const sequenceNumbers = await this.fetchSequenceNumbers()
 
     const db = await this.dbPromise
     const tx = db.transaction('allPhrases')
@@ -61,14 +64,14 @@ export class KamatamaJishoStore {
       })
   }
 
-  private async fetchSequenceNumbersForProperty(property: string) {
+  private async fetchSequenceNumbers() {
     const db = await this.dbPromise
 
-    const tx = db.transaction(property)
+    const tx = db.transaction('queryStore')
     const allSequenceNumbers = new Set<number>()
 
     await tx.store
-      .index(property)
+      .index('queryStore')
       .getAll(IDBKeyRange.bound(this.query, this.query + '\uffff'), 50)
       .then((results) => {
         results.forEach((reading) => {

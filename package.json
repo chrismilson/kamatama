@@ -30,13 +30,15 @@
     "workbox-strategies": "^5.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "yarn build:dict && react-scripts build",
+    "start": "yarn dict:build && yarn dict:localise && react-scripts start",
+    "build": "yarn dict:build && yarn dict:delocalise && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
-    "build:dict": "cd dictionary && python3 dictToJSON.py && cd .."
+    "dict:build": "cd dictionary && python3 dictToJSON.py && cd ..",
+    "dict:localise": "cp -r dictionary/json/ public/dict",
+    "dict:delocalise": "rm -rf public/dict"
   },
   "eslintConfig": {
     "extends": [
