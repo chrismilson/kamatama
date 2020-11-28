@@ -312,8 +312,8 @@ def kanjidic2ToJSON(targetPath, *, minify=True):
 
 
 if __name__ == "__main__":
-    kanjiDicPath = '../public/dict/kanjidic2.json'
-    jmdictPath = '../public/dict/JMdict.json'
+    kanjiDicPath = './json/kanjidic2.json'
+    jmdictPath = './json/JMdict.json'
 
     if not os.path.isfile(kanjiDicPath):
         kanjidic2ToJSON(kanjiDicPath)

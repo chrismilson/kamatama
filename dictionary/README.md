@@ -9,19 +9,18 @@ in the client.
 ## Dictionaries
 
 The original, raw dictionary files are stored in `./raw`. They all get compiled
-to JSON by the `./dictToJSON.py` python script, and are put into the public
-folder as part of the build process.
+to JSON by the `./dictToJSON.py` python script, and are the put into `./json`.
+They are then included in the repository with
+[`git-lfs`](https://git-lfs.github.com), a solution to storing large files on
+github. 
 
-Since they will be hosted on github-pages, I can all compression associated
-problems as they will be handled by the static gh-pages server.
+On top of this, github pages does not support `git-lfs` resources, so instead of
+fetching them from the base domain, I will fetch them from github's media cdn
+with the following url:
 
-To include them in my code, instead of the async `import('some.json')`, I will
-use the `fetch('some.json').then(res => res.json())` method.
+> `https://media.githubusercontent.com/media/chrismilson/kamatama/master/dictionary/json/dictionaryFile.json`
 
 The dictionaries currently in use are:
 
 - [kanjidic2](http://www.edrdg.org/wiki/index.php/KANJIDIC_Project)
 - [JMdict](http://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project)
-
-Since these files are quite large, they are not stored in this repository.
-You can download them from their respective websites.
