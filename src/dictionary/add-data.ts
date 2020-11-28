@@ -1,5 +1,5 @@
 import { IDBPDatabase } from 'idb'
-import { JMEntry } from '../types/JapaneseMulti'
+import { JMEntry } from '../types/JMEntry'
 import { KanjiCharacter } from '../types/Kanji'
 import jsonIterator from './json-iterator'
 import path from 'path'
