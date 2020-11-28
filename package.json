@@ -31,11 +31,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "yarn build:dict && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "build:dict": "cd dictionary && python3 dictToJSON.py && cd .."
   },
   "eslintConfig": {
     "extends": [
