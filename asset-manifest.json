@@ -1,25 +1,24 @@
 {
   "files": {
-    "main.css": "/kamatama/static/css/main.b1cca545.chunk.css",
-    "main.js": "/kamatama/static/js/main.7d4187c0.chunk.js",
-    "main.js.map": "/kamatama/static/js/main.7d4187c0.chunk.js.map",
-    "runtime-main.js": "/kamatama/static/js/runtime-main.af4ad6da.js",
-    "runtime-main.js.map": "/kamatama/static/js/runtime-main.af4ad6da.js.map",
-    "static/js/2.351195ce.chunk.js": "/kamatama/static/js/2.351195ce.chunk.js",
-    "static/js/2.351195ce.chunk.js.map": "/kamatama/static/js/2.351195ce.chunk.js.map",
-    "static/js/3.30963198.chunk.js": "/kamatama/static/js/3.30963198.chunk.js",
-    "static/js/3.30963198.chunk.js.map": "/kamatama/static/js/3.30963198.chunk.js.map",
+    "main.css": "/kamatama/static/css/main.abb185b8.chunk.css",
+    "main.js": "/kamatama/static/js/main.8ab57cc2.chunk.js",
+    "main.js.map": "/kamatama/static/js/main.8ab57cc2.chunk.js.map",
+    "runtime-main.js": "/kamatama/static/js/runtime-main.25f13ffe.js",
+    "runtime-main.js.map": "/kamatama/static/js/runtime-main.25f13ffe.js.map",
+    "static/js/2.f41ed338.chunk.js": "/kamatama/static/js/2.f41ed338.chunk.js",
+    "static/js/2.f41ed338.chunk.js.map": "/kamatama/static/js/2.f41ed338.chunk.js.map",
+    "static/js/3.4b06bad9.chunk.js": "/kamatama/static/js/3.4b06bad9.chunk.js",
+    "static/js/3.4b06bad9.chunk.js.map": "/kamatama/static/js/3.4b06bad9.chunk.js.map",
     "index.html": "/kamatama/index.html",
     "service-worker.js": "/kamatama/service-worker.js",
     "service-worker.js.map": "/kamatama/service-worker.js.map",
-    "static/css/main.b1cca545.chunk.css.map": "/kamatama/static/css/main.b1cca545.chunk.css.map",
-    "static/js/2.351195ce.chunk.js.LICENSE.txt": "/kamatama/static/js/2.351195ce.chunk.js.LICENSE.txt",
-    "static/media/icon.f083c626.svg": "/kamatama/static/media/icon.f083c626.svg"
+    "static/css/main.abb185b8.chunk.css.map": "/kamatama/static/css/main.abb185b8.chunk.css.map",
+    "static/js/2.f41ed338.chunk.js.LICENSE.txt": "/kamatama/static/js/2.f41ed338.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.af4ad6da.js",
-    "static/js/2.351195ce.chunk.js",
-    "static/css/main.b1cca545.chunk.css",
-    "static/js/main.7d4187c0.chunk.js"
+    "static/js/runtime-main.25f13ffe.js",
+    "static/js/2.f41ed338.chunk.js",
+    "static/css/main.abb185b8.chunk.css",
+    "static/js/main.8ab57cc2.chunk.js"
   ]
 }
