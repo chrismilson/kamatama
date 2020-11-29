@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import ResultsView from './components/ResultsView'
+import ResultList from './components/Results'
 import store from '../state'
 import './App.css'
 import { observer } from 'mobx-react-lite'
@@ -9,7 +9,7 @@ const App: FC = observer(() => {
   return (
     <div className="App">
       <SearchBar />
-      <ResultsView results={store.results} />
+      <ResultList results={store.results} />
     </div>
   )
 })

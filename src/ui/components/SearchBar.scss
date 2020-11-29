@@ -1,0 +1,38 @@
+.SearchBar {
+  flex: 1 1;
+  position: sticky;
+  top: 0;
+
+  padding: 0.5em;
+  background-color: white;
+  // box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.3);
+  border-bottom: 0.5px solid black;
+  
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  
+  .icon {
+    object-fit: cover;
+    height: 4em;
+    width: 4em;
+    padding-right: 15px;
+  }
+
+  .Radicals {
+    display: none;
+    font-size: 2em;
+  }
+
+  input {
+    font-weight: bold;
+    font-size: x-large;
+    flex: 1 1;
+    width: 100%;
+
+    outline: none;
+    border: none;
+    // border-bottom: solid 3px black;
+    border-radius: 0;
+  }
+}

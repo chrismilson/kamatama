@@ -1,0 +1,26 @@
+.ResultList {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 2%;
+  margin: 0;
+
+  .ResultListItem {
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px;
+    border-bottom: 1px solid rgb(200, 200, 200);
+
+    .forms {
+      font-size: larger;
+      font-weight: 450;
+    }
+    
+    .forms, .meanings {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
