@@ -1,8 +1,8 @@
 import { openDB } from 'idb'
-import addAllDataToDB from './add-data'
+import { addDataIfNeeded } from './add-data'
 
 const initDB = async () => {
-  return openDB('kamatama', 1, {
+  const db = await openDB('kamatama', 1, {
     upgrade: async (db, _, version) => {
       console.log(`Upgrading database to version ${version}.`)
 
@@ -26,11 +26,15 @@ const initDB = async () => {
         )
       ).catch(console.error)
 
-      await addAllDataToDB(db)
-
       console.log(`Database upgraded to version ${version}`)
     }
   })
+
+  if (process.env.NODE_ENV === 'development') {
+    addDataIfNeeded(db)
+  }
+
+  return db
 }
 
 export default initDB

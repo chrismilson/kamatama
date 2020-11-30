@@ -60,8 +60,15 @@ export const addPhrasesToDB = async (db: IDBPDatabase) => {
   }
 }
 
-export const addAllDataToDB = async (db: IDBPDatabase) => {
-  return Promise.all([addKanjiToDB(db), addPhrasesToDB(db)])
-}
+export const addDataIfNeeded = async (db: IDBPDatabase) => {
+  const promises = []
 
-export default addAllDataToDB
+  if ((await db.count('allKanji')) < 13108) {
+    promises.push(addKanjiToDB(db))
+  }
+  if ((await db.count('allPhrases')) < 190269) {
+    promises.push(addPhrasesToDB(db))
+  }
+
+  await Promise.all(promises)
+}

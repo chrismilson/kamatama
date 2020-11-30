@@ -13,6 +13,8 @@ import { ExpirationPlugin } from 'workbox-expiration'
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching'
 import { registerRoute } from 'workbox-routing'
 import { CacheFirst } from 'workbox-strategies'
+import initDB from './dictionary'
+import { addDataIfNeeded } from './dictionary/add-data'
 
 declare const self: ServiceWorkerGlobalScope
 
@@ -78,4 +80,8 @@ self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting()
   }
+})
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(initDB().then((db) => addDataIfNeeded(db)))
 })
