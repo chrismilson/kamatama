@@ -25,6 +25,14 @@ type Config = {
   onUpdate?: (registration: ServiceWorkerRegistration) => void
 }
 
+const windowLoad = (): Promise<void> => {
+  return new Promise((resolve) => {
+    window.addEventListener('load', () => {
+      resolve()
+    })
+  })
+}
+
 export function register(config?: Config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
@@ -36,25 +44,26 @@ export function register(config?: Config) {
       return
     }
 
-    window.addEventListener('load', () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
+    windowLoad().then(() => {
+      alert('install')
+      // const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
 
-      if (isLocalhost) {
-        // This is running on localhost. Let's check if a service worker still exists or not.
-        checkValidServiceWorker(swUrl, config)
+      // if (isLocalhost) {
+      //   // This is running on localhost. Let's check if a service worker still exists or not.
+      //   checkValidServiceWorker(swUrl, config)
 
-        // Add some additional logging to localhost, pointing developers to the
-        // service worker/PWA documentation.
-        navigator.serviceWorker.ready.then(() => {
-          console.log(
-            'This web app is being served cache-first by a service ' +
-              'worker. To learn more, visit https://cra.link/PWA'
-          )
-        })
-      } else {
-        // Is not localhost. Just register service worker
-        registerValidSW(swUrl, config)
-      }
+      //   // Add some additional logging to localhost, pointing developers to the
+      //   // service worker/PWA documentation.
+      //   navigator.serviceWorker.ready.then(() => {
+      //     console.log(
+      //       'This web app is being served cache-first by a service ' +
+      //         'worker. To learn more, visit https://cra.link/PWA'
+      //     )
+      //   })
+      // } else {
+      //   // Is not localhost. Just register service worker
+      //   registerValidSW(swUrl, config)
+      // }
     })
   }
 }
