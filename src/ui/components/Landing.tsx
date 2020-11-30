@@ -54,7 +54,7 @@ const Landing: FC = () => {
         <h1>こんにちは!</h1>
         <p>
           This is Kamatama Jisho, a Japanese-English phrase book powered by the
-          web!.
+          web!
         </p>
         {canInstall ? (
           <p>To install Kamatama Jisho, just press the big egg down below.</p>
