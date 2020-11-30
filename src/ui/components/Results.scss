@@ -1,15 +1,15 @@
 .ResultList {
+  flex: 1;
   display: flex;
   flex-direction: column;
   list-style-type: none;
-  padding: 2%;
+  padding: 1% 2%;
   margin: 0;
+  
+  overflow-y: auto;
 
   .ResultListItem {
-    display: flex;
-    flex-direction: column;
-
-    padding: 10px;
+    padding: 20px;
     border-bottom: 1px solid rgb(200, 200, 200);
 
     .forms {
