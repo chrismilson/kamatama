@@ -82,6 +82,6 @@ self.addEventListener('message', (event) => {
   }
 })
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('install', (event) => {
   event.waitUntil(initDB().then((db) => addDataIfNeeded(db)))
 })
