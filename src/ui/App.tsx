@@ -1,23 +1,19 @@
-import { FC, useEffect } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 import Landing from './components/Landing'
-import Home from './components/Home'
+import store from '../state'
+import ResultList from './components/Results'
+import SearchBar from './components/SearchBar'
+import './App.scss'
 
-const App: FC = () => {
-  useEffect(() => {}, [])
-
+const App: FC = observer(() => {
   return (
-    <Router basename="/kamatama">
-      <Switch>
-        <Route path="/install">
-          <Landing />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </Router>
+    <div className="App">
+      <Landing />
+      <SearchBar />
+      <ResultList results={store.results} />
+    </div>
   )
-}
+})
 
 export default App

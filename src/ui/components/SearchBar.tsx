@@ -17,7 +17,7 @@ const SearchBar: FC = observer(() => {
 
   return (
     <div className="SearchBar">
-      <img className="icon" src={icon} alt="icon to open menu" />
+      <img className="icon" src={icon} alt="icon" />
       <input
         ref={inputRef}
         type="text"
