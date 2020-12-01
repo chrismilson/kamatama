@@ -4,6 +4,7 @@ from itertools import islice
 import re
 import os
 from collections import defaultdict
+from gzip import compress
 
 
 class NoEntities:
@@ -171,11 +172,14 @@ def jmdicToJSON(targetPath, *, minify=True):
             # for entry in [root.find('entry')]
         ]
 
-    with open(targetPath, 'w') as jsonFile:
-        jsonFile.write(json.dumps(
+    with open(targetPath, 'wb') as jsonFile:
+        jsonString = json.dumps(
             entries,
             indent=None if minify else 2
-        ))
+        )
+        jsonBytes = jsonString.encode('utf-8')
+        encodedBytes = compress(jsonBytes)
+        jsonFile.write(encodedBytes)
 
 
 def kanjidic2ToJSON(targetPath, *, minify=True):
@@ -304,16 +308,27 @@ def kanjidic2ToJSON(targetPath, *, minify=True):
         for character in root.findall('character')
     ]
 
-    with open(targetPath, 'w') as jsonFile:
-        jsonFile.write(json.dumps(
+    with open(targetPath, 'wb') as jsonFile:
+        jsonString = json.dumps(
             chars,
             indent=None if minify else 2
-        ))
+        )
+        jsonBytes = jsonString.encode('utf-8')
+        encodedBytes = compress(jsonBytes)
+        jsonFile.write(encodedBytes)
 
 
 if __name__ == "__main__":
-    kanjiDicPath = './json/kanjidic2.json'
-    jmdictPath = './json/JMdict.json'
+    basePath = '../public/dict'
+
+    kanjiDicFileName = 'kanjidic2.json.gz'
+    jmdictFileName = 'JMdict.json.gz'
+
+    kanjiDicPath = os.path.join(basePath, kanjiDicFileName)
+    jmdictPath = os.path.join(basePath, jmdictFileName)
+
+    if not os.path.exists(basePath):
+        os.mkdir(basePath)
 
     if not os.path.isfile(kanjiDicPath):
         kanjidic2ToJSON(kanjiDicPath)

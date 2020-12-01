@@ -24,5 +24,4 @@ yarn-error.log*
 
 .eslintcache
 
-public/dict
 dictionary/raw
