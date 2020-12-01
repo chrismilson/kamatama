@@ -16,7 +16,10 @@ const initDB = async () => {
         keyPath: 'sequenceNumber'
       })
 
-      queryStore.createIndex('queryStore', 'values', {
+      queryStore.createIndex('exact', 'exact', {
+        multiEntry: true
+      })
+      queryStore.createIndex('partial', 'partial', {
         multiEntry: true
       })
 
@@ -29,10 +32,6 @@ const initDB = async () => {
       console.log(`Database upgraded to version ${version}`)
     }
   })
-
-  if (process.env.NODE_ENV === 'development') {
-    addDataIfNeeded(db)
-  }
 
   return db
 }
