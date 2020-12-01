@@ -1,5 +1,6 @@
 import { IDBPDatabase } from 'idb'
 import { makeAutoObservable, runInAction } from 'mobx'
+import { toHiragana } from 'wanakana'
 import initDB from '../dictionary'
 import { JMEntry } from '../types/JMEntry'
 
@@ -30,20 +31,23 @@ export class KamatamaJishoStore {
     } else {
       this.query = updateFactory
     }
-    this.fetchResults()
+    const query = toHiragana(this.query, { passRomaji: true })
+    this.fetchResults(query)
   }
 
-  private async fetchResults() {
-    if (this.query === '') {
+  private async fetchResults(query: string) {
+    if (query === '') {
       runInAction(() => {
         this.results = []
       })
       return
     }
-
     const requestID = ++this.request
 
-    const sequenceNumbers = await this.fetchSequenceNumbers()
+    const sequenceNumbers = new Set<number>()
+
+    await this.fetchExactSequenceNumbers(query, sequenceNumbers)
+    await this.fetchPartialSequenceNumbers(query, sequenceNumbers)
 
     const db = await this.dbPromise
     const tx = db.transaction('allPhrases')
@@ -58,30 +62,61 @@ export class KamatamaJishoStore {
       })
     )
 
-    if (requestID === this.request)
+    if (requestID === this.request) {
       runInAction(() => {
         this.results = results
       })
+    }
   }
 
-  private async fetchSequenceNumbers() {
+  private async fetchExactSequenceNumbers(
+    query: string,
+    sequenceNumbers: Set<number>
+  ) {
     const db = await this.dbPromise
 
     const tx = db.transaction('queryStore')
-    const allSequenceNumbers = new Set<number>()
 
     await tx.store
-      .index('queryStore')
-      .getAll(IDBKeyRange.bound(this.query, this.query + '\uffff'), 50)
-      .then((results) => {
-        results.forEach((reading) => {
-          allSequenceNumbers.add(reading.sequenceNumber)
+      .index('exact')
+      .getAll(query)
+      .then((matches) => {
+        matches.forEach(({ sequenceNumber }) => {
+          sequenceNumbers.add(sequenceNumber)
         })
       })
 
     await tx.done
+  }
 
-    return allSequenceNumbers
+  private async fetchPartialSequenceNumbers(
+    query: string,
+    sequenceNumbers: Set<number>
+  ) {
+    const db = await this.dbPromise
+
+    const tx = db.transaction('queryStore')
+
+    await Promise.all([
+      tx.store
+        .index('exact')
+        .getAll(IDBKeyRange.bound(query, query + '\uffff'), 30)
+        .then((matches) => {
+          matches.forEach(({ sequenceNumber }) => {
+            sequenceNumbers.add(sequenceNumber)
+          })
+        }),
+      tx.store
+        .index('partial')
+        .getAll(IDBKeyRange.bound(query, query + '\uffff'), 30)
+        .then((matches) => {
+          matches.forEach(({ sequenceNumber }) => {
+            sequenceNumbers.add(sequenceNumber)
+          })
+        })
+    ])
+
+    await tx.done
   }
 }
 

@@ -1,8 +1,9 @@
 import { IDBPDatabase } from 'idb'
+import path from 'path'
+import { toHiragana } from 'wanakana'
 import { JMEntry } from '../types/JMEntry'
 import { KanjiCharacter } from '../types/Kanji'
 import jsonIterator from './json-iterator'
-import path from 'path'
 
 /**
  * Calculates a url for github's media service.
@@ -44,14 +45,30 @@ export const addPhrasesToDB = async (db: IDBPDatabase) => {
 
     await Promise.all([
       phraseGroup.map((phrase) => {
+        const query: {
+          sequenceNumber: number
+          exact: string[]
+          kana: string[]
+          partial: string[]
+        } = {
+          sequenceNumber: phrase.sequenceNumber,
+          exact: [],
+          kana: [],
+          partial: []
+        }
+
+        for (const { value } of [...phrase.kanji, ...phrase.reading]) {
+          const hiragana = toHiragana(value)
+
+          query.exact.push(hiragana)
+          for (let i = 1; i < hiragana.length; i++) {
+            query.partial.push(hiragana.substring(i))
+          }
+        }
+
         return Promise.all([
           tx.objectStore('allPhrases').put(phrase),
-          tx.objectStore('queryStore').put({
-            sequenceNumber: phrase.sequenceNumber,
-            values: phrase.reading
-              .map((reading) => reading.value)
-              .concat(phrase.kanji.map((kanji) => kanji.value))
-          })
+          tx.objectStore('queryStore').put(query)
         ])
       })
     ])
