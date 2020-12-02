@@ -14,10 +14,12 @@ const ResultListItem: FC<JMEntry> = observer(
         }}
       >
         <div className="forms">
-          {[...kanji, ...reading]
-            .sort((a, b) => a.priority.length - b.priority.length)
-            .map((form) => form.value)
-            .join('、')}
+          {
+            [...kanji, ...reading]
+              .sort((a, b) => a.priority.length - b.priority.length)
+              .map((form) => form.value)
+              .join('、') // We should join Japanese with the full width comma.
+          }
         </div>
         <div className="meanings">
           {sense
