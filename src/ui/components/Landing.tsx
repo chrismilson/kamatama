@@ -10,6 +10,7 @@ export interface BeforeInstallPromptEvent extends Event {
 
 const Landing: FC = () => {
   const [installed, setInstalled] = useState(true)
+  const [installing, setInstalling] = useState(false)
   // Can the UA install PWAs?
   const canInstall = 'serviceWorker' in navigator && 'indexedDB' in window
   const [
@@ -49,10 +50,11 @@ const Landing: FC = () => {
   // If the app should be installed, we should add the data to the db and prompt
   // the user to install the standalone PWA.
   const handleInstall = useCallback(() => {
-    if (installed || !canInstall) {
+    if (installed || !canInstall || installing) {
       return
     }
 
+    setInstalling(true)
     initDB()
       .then((db) => addDataIfNeeded(db))
       .then(() => {
@@ -61,7 +63,7 @@ const Landing: FC = () => {
         }
         setInstalled(true)
       })
-  }, [installPromptEvent, installed, canInstall])
+  }, [installPromptEvent, installed, canInstall, installing])
 
   return (
     <div
@@ -88,8 +90,8 @@ const Landing: FC = () => {
         )}
       </div>
       {canInstall && (
-        <button className="icon" onClick={handleInstall}>
-          <Icon />
+        <button className="icon">
+          <Icon onClick={handleInstall} />
         </button>
       )}
     </div>
