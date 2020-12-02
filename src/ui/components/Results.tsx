@@ -4,24 +4,32 @@ import store from '../../state'
 import { JMEntry } from '../../types/JMEntry'
 import './Results.scss'
 
-const ResultListItem: FC<JMEntry> = ({ reading, kanji, sense }) => {
-  return (
-    <li className="ResultListItem">
-      <div className="forms">
-        {[...kanji, ...reading]
-          .sort((a, b) => a.priority.length - b.priority.length)
-          .map((form) => form.value)
-          .join('、')}
-      </div>
-      <div className="meanings">
-        {sense
-          .flatMap((meaning) => meaning.glossary)
-          .map((glossary) => glossary.value)
-          .join(', ')}
-      </div>
-    </li>
-  )
-}
+const ResultListItem: FC<JMEntry> = observer(
+  ({ sequenceNumber, reading, kanji, sense }) => {
+    return (
+      <li
+        className="ResultListItem"
+        onClick={() => {
+          store.setCurrentEntry(sequenceNumber)
+          console.log(reading[0].value)
+        }}
+      >
+        <div className="forms">
+          {[...kanji, ...reading]
+            .sort((a, b) => a.priority.length - b.priority.length)
+            .map((form) => form.value)
+            .join('、')}
+        </div>
+        <div className="meanings">
+          {sense
+            .flatMap((meaning) => meaning.glossary)
+            .map((glossary) => glossary.value)
+            .join(', ')}
+        </div>
+      </li>
+    )
+  }
+)
 
 /**
  * A list of the results for the current query.

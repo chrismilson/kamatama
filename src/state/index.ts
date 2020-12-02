@@ -11,9 +11,27 @@ export class KamatamaJishoStore {
   /** The current search query. */
   query: string
   loadingResults: boolean
-  results: JMEntry[]
+  /**
+   * A counter to increment on result fetching.
+   *
+   * If the results come back and the counter has been increased, we should
+   * abandon the results.
+   */
   request: number
+  results: JMEntry[]
   dbPromise: Promise<IDBPDatabase>
+
+  /**
+   * A counter to increment on entry fetching.
+   *
+   * If the entry comes back and the counter has been increased, we should
+   * abandon the result.
+   */
+  entry: number
+  /**
+   * The currently selected entry.
+   */
+  currentEntry?: JMEntry
 
   constructor() {
     makeAutoObservable(this)
@@ -22,6 +40,7 @@ export class KamatamaJishoStore {
     this.loadingResults = false
     this.results = []
     this.request = 0
+    this.entry = 0
     this.dbPromise = initDB()
   }
 
@@ -31,8 +50,28 @@ export class KamatamaJishoStore {
     } else {
       this.query = updateFactory
     }
-    const query = toHiragana(this.query, { passRomaji: true })
-    this.fetchResults(query)
+    this.fetchResults(toHiragana(this.query, { passRomaji: true }))
+  }
+
+  async setCurrentEntry(sequenceNumber: number) {
+    if (sequenceNumber === -1) {
+      runInAction(() => {
+        this.currentEntry = undefined
+      })
+      return
+    }
+    const requestID = ++this.entry
+    const db = await this.dbPromise
+
+    const tx = db.transaction('allPhrases')
+
+    const result = await tx.store.get(sequenceNumber)
+
+    if (this.entry === requestID) {
+      runInAction(() => {
+        this.currentEntry = result
+      })
+    }
   }
 
   private async fetchResults(query: string) {
