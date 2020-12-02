@@ -178,7 +178,7 @@ export interface JMSenseGlossary {
    * Defines the target language of the glossary. It will be coded using the
    * three-letter language code from the ISO 639 standard.
    */
-  language: string
+  language?: string
   gender?: string
   /**
    * Specifies that the glossary is of a particular type.
