@@ -397,58 +397,58 @@ export interface JMSense {
    * As with parts of speech, information will usually apply to several senses.
    */
   misc: (
-    | 'abbr' //abbreviation
-    | 'arch' //archaism
-    | 'char' //character
-    | 'chn' //children's language
-    | 'col' //colloquialism
-    | 'company' //company name
-    | 'creat' //creature
-    | 'dated' //dated term
-    | 'dei' //deity
-    | 'derog' //derogatory
-    | 'ev' //event
-    | 'fam' //familiar language
-    | 'fem' //female term or language
-    | 'fict' //fiction
-    | 'given' //given name or forename, gender not specified
-    | 'hist' //historical term
-    | 'hon' //honorific or respectful (sonkeigo) language
-    | 'hum' //humble (kenjougo) language
-    | 'id' //idiomatic expression
-    | 'joc' //jocular, humorous term
-    | 'leg' //legend
-    | 'litf' //literary or formal term
-    | 'm-sl' //manga slang
-    | 'male' //male term or language
-    | 'myth' //mythology
-    | 'net-sl' //Internet slang
-    | 'obj' //object
-    | 'obs' //obsolete term
-    | 'obsc' //obscure term
-    | 'on-mim' //onomatopoeic or mimetic word
-    | 'organization' //organization name
-    | 'oth' //other
-    | 'person' //full name of a particular person
-    | 'place' //place name
-    | 'poet' //poetical term
-    | 'pol' //polite (teineigo) language
-    | 'product' //product name
-    | 'proverb' //proverb
-    | 'quote' //quotation
-    | 'rare' //rare
-    | 'relig' //religion
-    | 'sens' //sensitive
-    | 'serv' //service
-    | 'sl' //slang
-    | 'station' //railway station
-    | 'surname' //family or surname
-    | 'uk' //word usually written using kana alone
-    | 'unclass' //unclassified name
-    | 'vulg' //vulgar expression or word
-    | 'work' //work of art, literature, music, etc. name
-    | 'X' //rude or X-rated term (not displayed in educational software)
-    | 'yoji' //yojijukugo
+    | 'abbr' // abbreviation
+    | 'arch' // archaism
+    | 'char' // character
+    | 'chn' // children's language
+    | 'col' // colloquialism
+    | 'company' // company name
+    | 'creat' // creature
+    | 'dated' // dated term
+    | 'dei' // deity
+    | 'derog' // derogatory
+    | 'ev' // event
+    | 'fam' // familiar language
+    | 'fem' // female term or language
+    | 'fict' // fiction
+    | 'given' // given name or forename, gender not specified
+    | 'hist' // historical term
+    | 'hon' // honorific or respectful (sonkeigo) language
+    | 'hum' // humble (kenjougo) language
+    | 'id' // idiomatic expression
+    | 'joc' // jocular, humorous term
+    | 'leg' // legend
+    | 'litf' // literary or formal term
+    | 'm-sl' // manga slang
+    | 'male' // male term or language
+    | 'myth' // mythology
+    | 'net-sl' // Internet slang
+    | 'obj' // object
+    | 'obs' // obsolete term
+    | 'obsc' // obscure term
+    | 'on-mim' // onomatopoeic or mimetic word
+    | 'organization' // organization name
+    | 'oth' // other
+    | 'person' // full name of a particular person
+    | 'place' // place name
+    | 'poet' // poetical term
+    | 'pol' // polite (teineigo) language
+    | 'product' // product name
+    | 'proverb' // proverb
+    | 'quote' // quotation
+    | 'rare' // rare
+    | 'relig' // religion
+    | 'sens' // sensitive
+    | 'serv' // service
+    | 'sl' // slang
+    | 'station' // railway station
+    | 'surname' // family or surname
+    | 'uk' // word usually written using kana alone
+    | 'unclass' // unclassified name
+    | 'vulg' // vulgar expression or word
+    | 'work' // work of art, literature, music, etc. name
+    | 'X' // rude or X-rated term (not displayed in educational software)
+    | 'yoji' // yojijukugo
   )[]
   sourceLanguage: JMSenseSourceLanguage[]
   /**
