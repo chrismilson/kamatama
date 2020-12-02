@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './ui/App'
 import reportWebVitals from './reportWebVitals'
+import { register } from './serviceWorkerRegistration'
 
 ReactDOM.render(
   <StrictMode>
@@ -10,6 +11,8 @@ ReactDOM.render(
   </StrictMode>,
   document.getElementById('root')
 )
+
+register()
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

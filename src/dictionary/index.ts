@@ -1,5 +1,4 @@
 import { openDB } from 'idb'
-import { addDataIfNeeded } from './add-data'
 
 const initDB = async () => {
   const db = await openDB('kamatama', 1, {
@@ -32,8 +31,6 @@ const initDB = async () => {
       console.log(`Database upgraded to version ${version}`)
     }
   })
-
-  await addDataIfNeeded(db)
 
   return db
 }

@@ -1,7 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import initDB from '../../dictionary'
 import { addDataIfNeeded } from '../../dictionary/add-data'
-import { register } from '../../serviceWorkerRegistration'
 import { ReactComponent as Icon } from '../icon.svg'
 import './Landing.scss'
 
@@ -12,14 +11,14 @@ export interface BeforeInstallPromptEvent extends Event {
 const Landing: FC = () => {
   const [installed, setInstalled] = useState(true)
   // Can the UA install PWAs?
-  const canInstall = 'serviceWorker' in navigator
+  const canInstall = 'serviceWorker' in navigator && 'indexedDB' in window
   const [
     installPromptEvent,
     setInstallPromptEvent
   ] = useState<BeforeInstallPromptEvent | null>(null)
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
+    if (canInstall) {
       initDB().then(async (db) => {
         const kanjiCount = await db.count('allKanji')
         const phraseCount = await db.count('allPhrases')
@@ -28,29 +27,12 @@ const Landing: FC = () => {
           setInstalled(false)
         }
       })
-      return
-    }
-
-    // Is the app installed?
-    if (canInstall) {
-      if (navigator.serviceWorker.controller === null) {
-        // the app is not installed
-        setInstalled(false)
-      } else {
-        initDB().then(async (db) => {
-          const kanjiCount = await db.count('allKanji')
-          const phraseCount = await db.count('allPhrases')
-
-          if (kanjiCount < 13108 || phraseCount < 190269) {
-            setInstalled(false)
-          }
-        })
-      }
     } else {
       setInstalled(false)
     }
   }, [canInstall])
 
+  // If the user can be prompted to install the app, we want to do that.
   useEffect(() => {
     const handler = (e: Event) => {
       e.preventDefault()
@@ -64,33 +46,27 @@ const Landing: FC = () => {
     }
   }, [])
 
+  // If the app should be installed, we should add the data to the db and prompt
+  // the user to install the standalone PWA.
   const handleInstall = useCallback(() => {
-    const onSuccess = () => {
-      // The service worker is now installed.
-      setInstalled(true)
-    }
-
-    if (process.env.NODE_ENV === 'development') {
-      initDB()
-        .then((db) => addDataIfNeeded(db))
-        .then(() => setInstalled(true))
+    if (installed || !canInstall) {
       return
     }
 
-    register({ onSuccess })
-
-    if (
-      installPromptEvent &&
-      !window.matchMedia('(display-mode: standalone)').matches
-    ) {
-      installPromptEvent.prompt().catch(console.error)
-    }
-  }, [installPromptEvent])
+    initDB()
+      .then((db) => addDataIfNeeded(db))
+      .then(() => {
+        if (installPromptEvent !== null) {
+          installPromptEvent.prompt()
+        }
+        setInstalled(true)
+      })
+  }, [installPromptEvent, installed, canInstall])
 
   return (
     <div
       className={['Landing', installed && 'installed']
-        .filter(Boolean)
+        .filter(Boolean) // removes falsy classnames
         .join(' ')}
     >
       <div className="content">
