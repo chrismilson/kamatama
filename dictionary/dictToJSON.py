@@ -142,9 +142,12 @@ def jmdicToJSON(targetPath, *, minify=True):
                 for gloss in sense.findall('gloss'):
                     glossResult = {}
 
-                    if gloss.get('xml:lang') != None:
+                    if gloss.get('{http://www.w3.org/XML/1998/namespace}lang') != 'eng':
                         # We are only interested in English
                         continue
+
+                    if (gType := gloss.get('g_type')) != None:
+                        glossResult['type'] = gType
 
                     if (gender := gloss.get('g_gend')) != None:
                         glossResult['gender'] = gender
@@ -161,7 +164,8 @@ def jmdicToJSON(targetPath, *, minify=True):
                 for dialect in sense.findall('dial'):
                     senseResult['dialect'].append(dialect.text)
 
-                result['sense'].append(senseResult)
+                if senseResult['glossary']:
+                    result['sense'].append(senseResult)
 
             return result
 
