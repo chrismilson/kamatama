@@ -11,7 +11,6 @@ const ResultListItem: FC<JMEntry> = observer(
         className="ResultListItem"
         onClick={() => {
           store.setCurrentEntry(sequenceNumber)
-          console.log(reading[0].value)
         }}
       >
         <div className="forms">
