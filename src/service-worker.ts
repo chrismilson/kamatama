@@ -13,8 +13,6 @@ import { ExpirationPlugin } from 'workbox-expiration'
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching'
 import { registerRoute } from 'workbox-routing'
 import { CacheFirst } from 'workbox-strategies'
-import initDB from './dictionary'
-import { addDataIfNeeded } from './dictionary/add-data'
 
 declare const self: ServiceWorkerGlobalScope
 
@@ -74,14 +72,21 @@ registerRoute(
   })
 )
 
+// Cache the dictionary files, so they don't have to be downloaded even when the
+// IndexedDB is not populated properly
+registerRoute(({ url }) => {
+  return (
+    url.origin === self.location.origin && url.pathname.endsWith('.json.gz'),
+    new CacheFirst({
+      cacheName: 'dictionaries'
+    })
+  )
+})
+
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting()
   }
-})
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(initDB().then((db) => addDataIfNeeded(db)))
 })

@@ -33,6 +33,8 @@ const initDB = async () => {
     }
   })
 
+  await addDataIfNeeded(db)
+
   return db
 }
 

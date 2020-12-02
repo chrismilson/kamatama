@@ -1,3 +1,5 @@
+import { ungzip } from 'pako'
+
 /**
  * Fetches a json file and iterates over all of the base objects.
  *
@@ -10,7 +12,13 @@
 export default async function* jsonIterator<T = any>(url: string) {
   const decoder = new TextDecoder('utf-8')
 
-  const reader = (await fetch(url)).body?.getReader()
+  const response = await fetch(url)
+  const gzBlob = await response.blob()
+  const gzBytes = await gzBlob.arrayBuffer()
+  const jsonBytes = ungzip(new Uint8Array(gzBytes))
+  const jsonBlob = new Blob([jsonBytes])
+  const reader = jsonBlob.stream().getReader()
+
   if (!reader) {
     return
   }

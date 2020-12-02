@@ -5,27 +5,9 @@ import { JMEntry } from '../types/JMEntry'
 import { KanjiCharacter } from '../types/Kanji'
 import jsonIterator from './json-iterator'
 
-/**
- * Calculates a url for github's media service.
- *
- * The url will have the form:
- *
- * > https://media.githubusercontent.com/media/_Username_/_Project_/_Branch_/_Path_to_file_
- */
-const getMediaUrl = (filePath: string) => {
-  const baseUrl = 'https://media.githubusercontent.com/media/'
-  const userName = 'chrismilson'
-  const project = 'kamatama'
-  const branch = 'master'
-
-  return baseUrl + path.join(userName, project, branch, filePath)
-}
-
 export const addKanjiToDB = async (db: IDBPDatabase) => {
   for await (const kanjiGroup of jsonIterator<KanjiCharacter>(
-    process.env.NODE_ENV === 'development'
-      ? path.join(process.env.PUBLIC_URL, 'dict/kanjidic2.json')
-      : getMediaUrl('dictionary/json/kanjidic2.json')
+    path.join(process.env.PUBLIC_URL, 'dict/kanjidic2.json.gz')
   )) {
     const tx = db.transaction('allKanji', 'readwrite')
 
@@ -37,9 +19,7 @@ export const addKanjiToDB = async (db: IDBPDatabase) => {
 
 export const addPhrasesToDB = async (db: IDBPDatabase) => {
   for await (const phraseGroup of jsonIterator<JMEntry>(
-    process.env.NODE_ENV === 'development'
-      ? path.join(process.env.PUBLIC_URL, 'dict/JMdict.json')
-      : getMediaUrl('dictionary/json/JMdict.json')
+    path.join(process.env.PUBLIC_URL, 'dict/JMdict.json.gz')
   )) {
     const tx = db.transaction(['allPhrases', 'queryStore'], 'readwrite')
 
