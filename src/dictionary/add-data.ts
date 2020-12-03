@@ -5,26 +5,61 @@ import { JMEntry } from '../types/JMEntry'
 import { KanjiCharacter } from '../types/Kanji'
 import jsonIterator from './json-iterator'
 
-export const addKanjiToDB = async (db: IDBPDatabase) => {
-  for await (const kanjiGroup of jsonIterator<KanjiCharacter>(
-    path.join(process.env.PUBLIC_URL, 'dict/kanjidic2.json.gz')
-  )) {
-    const tx = db.transaction('allKanji', 'readwrite')
+export const totalKanji = 13108
+export const totalPhrases = 190269
 
-    await Promise.all(kanjiGroup.map((kanji) => tx.store.put(kanji)))
+export async function* addDataToDB<T>(
+  url: string,
+  db: IDBPDatabase,
+  storeNames: string[],
+  handleProgress?: (progress: number) => void
+) {
+  let count = 0
+
+  for await (const group of jsonIterator<T>(
+    path.join(process.env.PUBLIC_URL, url)
+  )) {
+    const tx = db.transaction(storeNames, 'readwrite')
+
+    yield { tx, group }
+
+    count += group.length
+    if (handleProgress !== undefined) {
+      handleProgress(count)
+    }
+  }
+}
+
+export const addKanjiToDB = async (
+  db: IDBPDatabase,
+  handleProgress?: (progress: number) => void
+) => {
+  for await (const { tx, group } of addDataToDB<KanjiCharacter>(
+    'dict/kanjidic2.json.gz',
+    db,
+    ['allKanji'],
+    handleProgress
+  )) {
+    await Promise.all(
+      group.map((kanji) => tx.objectStore('allKanji').put(kanji))
+    )
 
     await tx.done
   }
 }
 
-export const addPhrasesToDB = async (db: IDBPDatabase) => {
-  for await (const phraseGroup of jsonIterator<JMEntry>(
-    path.join(process.env.PUBLIC_URL, 'dict/JMdict.json.gz')
+export const addPhrasesToDB = async (
+  db: IDBPDatabase,
+  handleProgress?: (progress: number) => void
+) => {
+  for await (const { tx, group } of addDataToDB<JMEntry>(
+    'dict/JMdict.json.gz',
+    db,
+    ['allPhrases', 'queryStore'],
+    handleProgress
   )) {
-    const tx = db.transaction(['allPhrases', 'queryStore'], 'readwrite')
-
     await Promise.all([
-      phraseGroup.map((phrase) => {
+      group.map((phrase) => {
         const query: {
           sequenceNumber: number
           exact: string[]
@@ -57,14 +92,39 @@ export const addPhrasesToDB = async (db: IDBPDatabase) => {
   }
 }
 
-export const addDataIfNeeded = async (db: IDBPDatabase) => {
+export const addDataIfNeeded = async (
+  db: IDBPDatabase,
+  handleProgress?: (progress: number) => void
+) => {
   const promises = []
+  let kanjiProgress = 0
+  let phraseProgress = 0
 
-  if ((await db.count('allKanji')) < 13108) {
-    promises.push(addKanjiToDB(db))
+  if ((await db.count('allKanji')) < totalKanji) {
+    promises.push(
+      addKanjiToDB(db, (progress) => {
+        kanjiProgress = progress
+
+        if (handleProgress) {
+          handleProgress(kanjiProgress + phraseProgress)
+        }
+      })
+    )
+  } else {
+    kanjiProgress = totalKanji
   }
-  if ((await db.count('allPhrases')) < 190269) {
-    promises.push(addPhrasesToDB(db))
+  if ((await db.count('allPhrases')) < totalPhrases) {
+    promises.push(
+      addPhrasesToDB(db, (progress) => {
+        phraseProgress = progress
+
+        if (handleProgress) {
+          handleProgress(kanjiProgress + phraseProgress)
+        }
+      })
+    )
+  } else {
+    phraseProgress = totalPhrases
   }
 
   await Promise.all(promises)
