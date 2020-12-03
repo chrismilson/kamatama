@@ -74,14 +74,16 @@ registerRoute(
 
 // Cache the dictionary files, so they don't have to be downloaded even when the
 // IndexedDB is not populated properly
-registerRoute(({ url }) => {
-  return (
-    url.origin === self.location.origin && url.pathname.endsWith('.json.gz'),
-    new CacheFirst({
-      cacheName: 'dictionaries'
-    })
-  )
-})
+registerRoute(
+  ({ url }) => {
+    return (
+      url.origin === self.location.origin && url.pathname.endsWith('.json.gz')
+    )
+  },
+  new CacheFirst({
+    cacheName: 'dictionaries'
+  })
+)
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
