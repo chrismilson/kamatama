@@ -17,7 +17,9 @@ export default async function* jsonIterator<T = any>(url: string) {
   const gzBytes = await gzBlob.arrayBuffer()
   const jsonBytes = ungzip(new Uint8Array(gzBytes))
   const jsonBlob = new Blob([jsonBytes])
-  const reader = jsonBlob.stream().getReader()
+
+  const jsonUrl = URL.createObjectURL(jsonBlob)
+  const reader = (await fetch(jsonUrl)).body?.getReader()
 
   if (!reader) {
     return
