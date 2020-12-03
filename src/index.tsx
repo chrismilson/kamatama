@@ -1,9 +1,9 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
 import App from './ui/App'
 import reportWebVitals from './reportWebVitals'
 import { register } from './serviceWorkerRegistration'
+import './index.scss'
 
 ReactDOM.render(
   <StrictMode>
