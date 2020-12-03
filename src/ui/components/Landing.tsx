@@ -1,6 +1,10 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import initDB from '../../dictionary'
-import { addDataIfNeeded } from '../../dictionary/add-data'
+import {
+  addDataIfNeeded,
+  totalKanji,
+  totalPhrases
+} from '../../dictionary/add-data'
 import { ReactComponent as Icon } from '../icon.svg'
 import './Landing.scss'
 
@@ -11,6 +15,8 @@ export interface BeforeInstallPromptEvent extends Event {
 const Landing: FC = () => {
   const [installed, setInstalled] = useState(true)
   const [installing, setInstalling] = useState(false)
+  const [progress, setProgress] = useState(0)
+
   // Can the UA install PWAs?
   const canInstall = 'serviceWorker' in navigator && 'indexedDB' in window
   const [
@@ -56,7 +62,13 @@ const Landing: FC = () => {
 
     setInstalling(true)
     initDB()
-      .then((db) => addDataIfNeeded(db))
+      .then((db) =>
+        addDataIfNeeded(db, (progress) => {
+          setProgress(
+            Math.floor((100 * progress) / (totalKanji + totalPhrases))
+          )
+        })
+      )
       .then(() => {
         if (installPromptEvent !== null) {
           installPromptEvent.prompt()
@@ -91,6 +103,13 @@ const Landing: FC = () => {
       </div>
       {canInstall && (
         <button className="icon">
+          <div
+            className={['progress', installing && 'visible']
+              .filter(Boolean)
+              .join(' ')}
+          >
+            {progress}%
+          </div>
           <Icon onClick={handleInstall} />
         </button>
       )}
