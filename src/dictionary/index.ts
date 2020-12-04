@@ -15,12 +15,8 @@ const initDB = async () => {
         keyPath: 'sequenceNumber'
       })
 
-      queryStore.createIndex('exact', 'exact', {
-        multiEntry: true
-      })
-      queryStore.createIndex('partial', 'partial', {
-        multiEntry: true
-      })
+      queryStore.createIndex('exact', 'exact', { multiEntry: true })
+      queryStore.createIndex('partial', 'partial', { multiEntry: true })
 
       await Promise.all(
         [allKanji, allPhrases, queryStore].map(
