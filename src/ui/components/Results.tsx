@@ -4,7 +4,7 @@ import store from '../../state'
 import { JMEntry } from '../../types/JMEntry'
 import './Results.scss'
 
-const ResultListItem: FC<JMEntry> = observer(
+const PhraseResultListItem: FC<JMEntry> = observer(
   ({ sequenceNumber, reading, kanji, sense }) => {
     return (
       <li
@@ -35,7 +35,7 @@ const ResultListItem: FC<JMEntry> = observer(
 /**
  * A list of the results for the current query.
  */
-const ResultList: FC<{
+const PhraseResultList: FC<{
   results: JMEntry[]
 }> = observer(() => {
   const { phraseResults } = store
@@ -43,10 +43,10 @@ const ResultList: FC<{
   return (
     <ul className="ResultList">
       {phraseResults.map((phrase) => (
-        <ResultListItem key={phrase.sequenceNumber} {...phrase} />
+        <PhraseResultListItem key={phrase.sequenceNumber} {...phrase} />
       ))}
     </ul>
   )
 })
 
-export default ResultList
+export default PhraseResultList
