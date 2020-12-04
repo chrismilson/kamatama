@@ -1,4 +1,4 @@
-import { IDBPDatabase } from 'idb'
+import { IDBPDatabase, IDBPTransaction } from 'idb'
 import path from 'path'
 import { toHiragana } from 'wanakana'
 import { JMEntry } from '../types/JMEntry'
@@ -8,10 +8,14 @@ import jsonIterator from './json-iterator'
 export const totalKanji = 13108
 export const totalPhrases = 190269
 
-export async function* addDataToDB<T>(
+export async function addDataToDB<T>(
   url: string,
   db: IDBPDatabase,
   storeNames: string[],
+  handleData: (
+    tx: IDBPTransaction<unknown, string[]>,
+    data: T
+  ) => Promise<void>,
   handleProgress?: (progress: number) => void
 ) {
   let count = 0
@@ -21,7 +25,8 @@ export async function* addDataToDB<T>(
   )) {
     const tx = db.transaction(storeNames, 'readwrite')
 
-    yield { tx, group }
+    await Promise.all(group.map((data) => handleData(tx, data)))
+    await tx.done
 
     count += group.length
     if (handleProgress !== undefined) {
@@ -34,62 +39,52 @@ export const addKanjiToDB = async (
   db: IDBPDatabase,
   handleProgress?: (progress: number) => void
 ) => {
-  for await (const { tx, group } of addDataToDB<KanjiCharacter>(
+  await addDataToDB<KanjiCharacter>(
     'dict/kanjidic2.json.gz',
     db,
     ['allKanji'],
+    (tx, kanji) => tx.objectStore('allKanji').put(kanji).then(),
     handleProgress
-  )) {
-    await Promise.all(
-      group.map((kanji) => tx.objectStore('allKanji').put(kanji))
-    )
-
-    await tx.done
-  }
+  )
 }
 
 export const addPhrasesToDB = async (
   db: IDBPDatabase,
   handleProgress?: (progress: number) => void
 ) => {
-  for await (const { tx, group } of addDataToDB<JMEntry>(
+  await addDataToDB<JMEntry>(
     'dict/JMdict.json.gz',
     db,
     ['allPhrases', 'queryStore'],
+    async (tx, phrase) => {
+      const query: {
+        sequenceNumber: number
+        exact: string[]
+        kana: string[]
+        partial: string[]
+      } = {
+        sequenceNumber: phrase.sequenceNumber,
+        exact: [],
+        kana: [],
+        partial: []
+      }
+
+      for (const { value } of [...phrase.kanji, ...phrase.reading]) {
+        const hiragana = toHiragana(value)
+
+        query.exact.push(hiragana)
+        for (let i = 1; i < hiragana.length; i++) {
+          query.partial.push(hiragana.substring(i))
+        }
+      }
+
+      return Promise.all([
+        tx.objectStore('allPhrases').put(phrase),
+        tx.objectStore('queryStore').put(query)
+      ]).then()
+    },
     handleProgress
-  )) {
-    await Promise.all([
-      group.map((phrase) => {
-        const query: {
-          sequenceNumber: number
-          exact: string[]
-          kana: string[]
-          partial: string[]
-        } = {
-          sequenceNumber: phrase.sequenceNumber,
-          exact: [],
-          kana: [],
-          partial: []
-        }
-
-        for (const { value } of [...phrase.kanji, ...phrase.reading]) {
-          const hiragana = toHiragana(value)
-
-          query.exact.push(hiragana)
-          for (let i = 1; i < hiragana.length; i++) {
-            query.partial.push(hiragana.substring(i))
-          }
-        }
-
-        return Promise.all([
-          tx.objectStore('allPhrases').put(phrase),
-          tx.objectStore('queryStore').put(query)
-        ])
-      })
-    ])
-
-    await tx.done
-  }
+  )
 }
 
 export const addDataIfNeeded = async (
