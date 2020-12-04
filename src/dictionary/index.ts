@@ -7,19 +7,25 @@ const initDB = async () => {
 
       const allKanji = db.createObjectStore('allKanji', { keyPath: 'literal' })
 
+      const kanjiQueryStore = db.createObjectStore('kanjiQueryStore', {
+        keyPath: 'literal'
+      })
+
+      kanjiQueryStore.createIndex('readings', 'readings', { multiEntry: true })
+
       const allPhrases = db.createObjectStore('allPhrases', {
         keyPath: 'sequenceNumber'
       })
 
-      const queryStore = db.createObjectStore('queryStore', {
+      const phraseQueryStore = db.createObjectStore('phraseQueryStore', {
         keyPath: 'sequenceNumber'
       })
 
-      queryStore.createIndex('exact', 'exact', { multiEntry: true })
-      queryStore.createIndex('partial', 'partial', { multiEntry: true })
+      phraseQueryStore.createIndex('exact', 'exact', { multiEntry: true })
+      phraseQueryStore.createIndex('partial', 'partial', { multiEntry: true })
 
       await Promise.all(
-        [allKanji, allPhrases, queryStore].map(
+        [allKanji, allPhrases, phraseQueryStore, kanjiQueryStore].map(
           ({ transaction }) => transaction.done
         )
       ).catch(console.error)

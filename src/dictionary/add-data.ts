@@ -81,7 +81,26 @@ export const addKanjiToDB = async (
   return addDataToDB<KanjiCharacter>(
     'dict/kanjidic2.json.gz',
     db,
-    ['allKanji'],
+    [
+      'allKanji',
+      {
+        storeName: 'kanjiQueryStore',
+        entryHandler: ({ literal, readingMeaning }) => {
+          const readings = readingMeaning?.flatMap((meaningGroupOrNanori) => {
+            if ('value' in meaningGroupOrNanori) {
+              return [meaningGroupOrNanori.value]
+            } else {
+              return meaningGroupOrNanori.reading
+                .filter(({ type }) => type === 'ja_kun' || type === 'ja_on')
+                .map(({ value }) => toHiragana(value))
+            }
+          })
+          if (readings && readings.length > 0) {
+            return { literal, readings }
+          }
+        }
+      }
+    ],
     handleProgress
   )
 }
