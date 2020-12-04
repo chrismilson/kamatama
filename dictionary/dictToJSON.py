@@ -297,12 +297,18 @@ def kanjidic2ToJSON(targetPath, *, minify=True):
                             rmGroupResult['reading'].append(readingResult)
 
                     for meaning in rmGroup.findall('meaning'):
-                        rmGroupResult['meaning'].append({
+                        meaningResult = {
                             'value': meaning.text
-                        })
+                        }
 
                         if (language := meaning.get('m_lang')) != None:
-                            rmGroupResult['meaning'][-1]['language'] = language
+                            continue
+                            # meaningResult['language'] = language
+
+                            # We are not interested in any meanings other than
+                            # English for our English-Japanese dictionary.
+
+                        rmGroupResult['meaning'].append(meaningResult)
 
                     result['readingMeaning'].append(rmGroupResult)
 
