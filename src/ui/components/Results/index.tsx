@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { FC } from 'react'
-import store from '../../state'
-import { JMEntry } from '../../types/JMEntry'
+import store from '../../../state'
+import { JMEntry } from '../../../types/JMEntry'
 import './Results.scss'
 
 const PhraseResultListItem: FC<JMEntry> = observer(
