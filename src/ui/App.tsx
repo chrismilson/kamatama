@@ -13,7 +13,7 @@ const App: FC = observer(() => {
       <Landing />
       <Phrase />
       <SearchBar />
-      <ResultList results={store.results} />
+      <ResultList results={store.phraseResults} />
     </div>
   )
 })

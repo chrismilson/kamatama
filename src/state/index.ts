@@ -3,6 +3,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { toHiragana } from 'wanakana'
 import initDB from '../dictionary'
 import { JMEntry } from '../types/JMEntry'
+import { KanjiCharacter } from '../types/Kanji'
 
 /**
  * Represents a store of the app's state.
@@ -10,38 +11,47 @@ import { JMEntry } from '../types/JMEntry'
 export class KamatamaJishoStore {
   /** The current search query. */
   query: string
-  loadingResults: boolean
+  dbPromise: Promise<IDBPDatabase>
+
   /**
    * A counter to increment on result fetching.
    *
    * If the results come back and the counter has been increased, we should
    * abandon the results.
    */
-  request: number
-  results: JMEntry[]
-  dbPromise: Promise<IDBPDatabase>
+  phraseQueryIDPool: number
+  phraseResults: JMEntry[]
 
   /**
-   * A counter to increment on entry fetching.
-   *
-   * If the entry comes back and the counter has been increased, we should
-   * abandon the result.
+   * See `phraseQueryIDPool`.
    */
-  entry: number
+  entryQueryIDPool: number
   /**
-   * The currently selected entry.
+   * The currently selected entry. Will be undefined if there is no selected
+   * entry.
    */
   currentEntry?: JMEntry
+
+  /**
+   * See `phraseQueryIDPool`.
+   */
+  kanjiQueryIDPool: number
+  kanjiResults: KanjiCharacter[]
 
   constructor() {
     makeAutoObservable(this)
 
     this.query = ''
-    this.loadingResults = false
-    this.results = []
-    this.request = 0
-    this.entry = 0
     this.dbPromise = initDB()
+
+    this.phraseQueryIDPool = 0
+    this.phraseResults = []
+
+    this.entryQueryIDPool = 0
+    // this.currentEntry = undefined
+
+    this.kanjiQueryIDPool = 0
+    this.kanjiResults = []
   }
 
   setQuery(updateFactory: string | ((priorQuery: string) => string)) {
@@ -50,7 +60,7 @@ export class KamatamaJishoStore {
     } else {
       this.query = updateFactory
     }
-    this.fetchResults(toHiragana(this.query, { passRomaji: true }))
+    this.fetchPhraseResults(toHiragana(this.query, { passRomaji: true }))
   }
 
   async setCurrentEntry(sequenceNumber: number) {
@@ -60,28 +70,43 @@ export class KamatamaJishoStore {
       })
       return
     }
-    const requestID = ++this.entry
+    const requestID = ++this.entryQueryIDPool
     const db = await this.dbPromise
 
     const tx = db.transaction('allPhrases')
 
     const result = await tx.store.get(sequenceNumber)
 
-    if (this.entry === requestID) {
+    if (this.entryQueryIDPool === requestID) {
       runInAction(() => {
         this.currentEntry = result
       })
     }
   }
 
-  private async fetchResults(query: string) {
+  private async fetchKanjiResults(query: string) {
     if (query === '') {
       runInAction(() => {
-        this.results = []
+        this.kanjiResults = []
       })
       return
     }
-    const requestID = ++this.request
+    const requestID = ++this.kanjiQueryIDPool
+    const literals = []
+  }
+
+  /**
+   * Searches the phrases for any matches to the given query and updates the
+   * results when done.
+   */
+  private async fetchPhraseResults(query: string) {
+    if (query === '') {
+      runInAction(() => {
+        this.phraseResults = []
+      })
+      return
+    }
+    const requestID = ++this.phraseQueryIDPool
 
     const sequenceNumbers = new Set<number>()
 
@@ -101,20 +126,26 @@ export class KamatamaJishoStore {
       })
     )
 
-    if (requestID === this.request) {
+    if (requestID === this.phraseQueryIDPool) {
       runInAction(() => {
-        this.results = results
+        this.phraseResults = results
       })
     }
   }
 
+  /**
+   * Searches the query store to find any exact matches.
+   *
+   * @param query The query to match exactly
+   * @param sequenceNumbers A set to populate with the results of the query.
+   */
   private async fetchExactSequenceNumbers(
     query: string,
     sequenceNumbers: Set<number>
   ) {
     const db = await this.dbPromise
 
-    const tx = db.transaction('queryStore')
+    const tx = db.transaction('phraseQueryStore')
 
     await tx.store
       .index('exact')
@@ -128,13 +159,19 @@ export class KamatamaJishoStore {
     await tx.done
   }
 
+  /**
+   * Searches the query store to find any partial matches.
+   *
+   * @param query The query to match exactly
+   * @param sequenceNumbers A set to populate with the results of the query.
+   */
   private async fetchPartialSequenceNumbers(
     query: string,
     sequenceNumbers: Set<number>
   ) {
     const db = await this.dbPromise
 
-    const tx = db.transaction('queryStore')
+    const tx = db.transaction('phraseQueryStore')
 
     await Promise.all([
       tx.store

@@ -38,12 +38,12 @@ const ResultListItem: FC<JMEntry> = observer(
 const ResultList: FC<{
   results: JMEntry[]
 }> = observer(() => {
-  const { results } = store
+  const { phraseResults } = store
 
   return (
     <ul className="ResultList">
-      {results.map((result) => (
-        <ResultListItem key={result.sequenceNumber} {...result} />
+      {phraseResults.map((phrase) => (
+        <ResultListItem key={phrase.sequenceNumber} {...phrase} />
       ))}
     </ul>
   )
