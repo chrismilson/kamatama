@@ -61,6 +61,7 @@ export class KamatamaJishoStore {
       this.query = updateFactory
     }
     this.fetchPhraseResults(toHiragana(this.query, { passRomaji: true }))
+    this.fetchKanjiResults(toHiragana(this.query, { passRomaji: true }))
   }
 
   async setCurrentEntry(sequenceNumber: number) {
@@ -92,7 +93,40 @@ export class KamatamaJishoStore {
       return
     }
     const requestID = ++this.kanjiQueryIDPool
-    const literals = []
+    const allLiterals = new Set<string>()
+
+    const db = await this.dbPromise
+
+    // Get the literals by searching for their reaadings.
+    const queryTx = db.transaction('kanjiQueryStore')
+
+    await queryTx.store
+      .index('readings')
+      .getAll(query)
+      .then((matches) =>
+        matches.forEach(({ literal }) => allLiterals.add(literal))
+      )
+
+    await queryTx.done
+
+    // Now get the characters by their literals.
+    const results: KanjiCharacter[] = []
+
+    const kanjiTx = db.transaction('allKanji')
+
+    await Promise.all(
+      Array.from(allLiterals).map(async (literal) => {
+        const kanji = await kanjiTx.store.get(literal)
+
+        results.push(kanji)
+      })
+    )
+
+    if (requestID === this.kanjiQueryIDPool) {
+      runInAction(() => {
+        this.kanjiResults = results
+      })
+    }
   }
 
   /**
