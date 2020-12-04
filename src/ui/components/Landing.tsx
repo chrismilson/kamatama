@@ -90,7 +90,10 @@ const Landing: FC = () => {
           web!
         </p>
         {canInstall ? (
-          <p>To install Kamatama Jisho, just press the big egg down below.</p>
+          <p>
+            To install Kamatama Jisho, just press the big egg down below. The
+            dictionary download is about 10.7MB.
+          </p>
         ) : (
           <p>
             Uh oh! The device you are using is not capable of installing{' '}
