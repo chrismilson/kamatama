@@ -30,7 +30,7 @@ const Landing: FC = () => {
         const kanjiCount = await db.count('allKanji')
         const phraseCount = await db.count('allPhrases')
 
-        if (kanjiCount < 13108 || phraseCount < 190269) {
+        if (kanjiCount < totalKanji || phraseCount < totalPhrases) {
           setInstalled(false)
         }
       })
