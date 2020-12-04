@@ -309,5 +309,5 @@ export interface KanjiCharacter {
   }
   dictionaryNumber: KanjiDictionaryReference[]
   queryCode: KanjiQueryCode[]
-  readingMeaning: (KanjiReadingMeaningGroup | KanjiNanoriReading)[]
+  readingMeaning?: (KanjiReadingMeaningGroup | KanjiNanoriReading)[]
 }
