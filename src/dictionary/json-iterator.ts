@@ -1,4 +1,4 @@
-import { ungzip } from 'pako'
+import { DecompressionStream } from '@stardazed/streams-compression'
 
 /**
  * Fetches a json file and iterates over all of the base objects.
@@ -13,13 +13,9 @@ export default async function* jsonIterator<T = any>(url: string) {
   const decoder = new TextDecoder('utf-8')
 
   const response = await fetch(url)
-  const gzBlob = await response.blob()
-  const gzBytes = await gzBlob.arrayBuffer()
-  const jsonBytes = ungzip(new Uint8Array(gzBytes))
-  const jsonBlob = new Blob([jsonBytes])
-
-  const jsonUrl = URL.createObjectURL(jsonBlob)
-  const reader = (await fetch(jsonUrl)).body?.getReader()
+  const reader = response.body
+    ?.pipeThrough(new DecompressionStream('gzip'))
+    .getReader()
 
   if (!reader) {
     return

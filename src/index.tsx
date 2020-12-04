@@ -4,6 +4,7 @@ import App from './ui/App'
 import reportWebVitals from './reportWebVitals'
 import { register } from './serviceWorkerRegistration'
 import './index.scss'
+import '@stardazed/streams-polyfill'
 
 ReactDOM.render(
   <StrictMode>
