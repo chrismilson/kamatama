@@ -15,7 +15,7 @@ class NoEntities:
 
     def __init__(self, xmlFile):
         self.targetName = xmlFile
-        self.tmpName = 'temp.xml'
+        self.tmpName = xmlFile + '.temp'
 
     def __enter__(self):
         match = r'<!ENTITY\s+(\S+)\s+"[^"]+"\s*>'
@@ -187,130 +187,136 @@ def jmdicToJSON(targetPath, *, minify=True):
 
 
 def kanjidic2ToJSON(targetPath, *, minify=True):
-    tree = ET.parse('./raw/kanjidic2.xml')
-    root = tree.getroot()
+    with NoEntities('./raw/kanjidic2.xml') as xml:
+        tree = ET.parse(xml)
+        root = tree.getroot()
 
-    def processCharacter(character):
-        result = {}
+        def processCharacter(character):
+            result = {}
 
-        # Literal
-        result['literal'] = character.find('literal').text
+            # Literal
+            result['literal'] = character.find('literal').text
 
-        # Codepoint
-        result['codepoint'] = []
-        for cpValue in character.find('codepoint'):
-            result['codepoint'].append({
-                'type': cpValue.get('cp_type'),
-                'value': cpValue.text
-            })
-
-        # Radical
-        result['radical'] = []
-        for radValue in character.find('radical'):
-            result['radical'].append({
-                'type': radValue.get('rad_type'),
-                'value': radValue.text
-            })
-
-        # Misc
-        result['misc'] = {}
-        misc = character.find('misc')
-
-        if (grade := misc.find('grade')) != None:
-            result['misc']['grade'] = int(grade.text)
-
-        result['misc']['strokeCount'] = []
-        for count in misc.findall('stroke_count'):
-            result['misc']['strokeCount'].append(int(count.text))
-
-        if (variants := misc.findall('variant')):
-            result['misc']['variant'] = []
-
-            for variant in variants:
-                result['misc']['variant'].append({
-                    'type': variant.get('var_type'),
-                    'value': variant.text
+            # Codepoint
+            result['codepoint'] = []
+            for cpValue in character.find('codepoint'):
+                result['codepoint'].append({
+                    'type': cpValue.get('cp_type'),
+                    'value': cpValue.text
                 })
 
-        if (freq := misc.find('freq')) != None:
-            result['misc']['freq'] = int(freq.text)
-
-        if (radicalNames := misc.findall('rad_name')):
-            result['misc']['radicalName'] = []
-            for radicalName in radicalNames:
-                result['misc']['radicalName'].append(radicalName.text)
-
-        if (jlpt := misc.find('jlpt')) != None:
-            result['misc']['jlpt'] = int(jlpt.text)
-
-        # Dictionary number
-        if (dicRefs := character.find('dic_number')) != None:
-            result['dictionaryNumber'] = []
-            for dicRef in dicRefs:
-                result['dictionaryNumber'].append({
-                    'type': dicRef.get('dr_type'),
-                    'value': dicRef.text
-                })
-                if (mVol := dicRef.get('m_vol')) != None:
-                    result['dictionaryNumber'][-1]['mVol'] = int(mVol)
-                if (mPage := dicRef.get('m_page')) != None:
-                    result['dictionaryNumber'][-1]['mPage'] = int(mPage)
-
-        # Query code
-        if (queryCodes := character.find('query_code')) != None:
-            result['queryCode'] = []
-
-            for queryCode in queryCodes:
-                result['queryCode'].append({
-                    'type': queryCode.get('qc_type'),
-                    'value': queryCode.text
+            # Radical
+            result['radical'] = []
+            for radValue in character.find('radical'):
+                result['radical'].append({
+                    'type': radValue.get('rad_type'),
+                    'value': radValue.text
                 })
 
-                if (skipMisclass := queryCode.get('skip_misclass')) != None:
-                    result['queryCode'][-1]['skipMisclass'] = skipMisclass
+            # Misc
+            result['misc'] = {}
+            misc = character.find('misc')
 
-        # Reading meaning
-        if (readingMeanings := character.find('reading_meaning')) != None:
-            result['readingMeaning'] = []
+            if (grade := misc.find('grade')) != None:
+                result['misc']['grade'] = int(grade.text)
 
-            for rmGroup in readingMeanings.findall('rmgroup'):
-                rmGroupResult = {
-                    'reading': [],
-                    'meaning': []
-                }
+            result['misc']['strokeCount'] = []
+            for count in misc.findall('stroke_count'):
+                result['misc']['strokeCount'].append(int(count.text))
 
-                for reading in rmGroup.findall('reading'):
-                    rmGroupResult['reading'].append({
-                        'type': reading.get('r_type'),
-                        'value': reading.text
+            if (variants := misc.findall('variant')):
+                result['misc']['variant'] = []
+
+                for variant in variants:
+                    result['misc']['variant'].append({
+                        'type': variant.get('var_type'),
+                        'value': variant.text
                     })
 
-                    if (onType := reading.get('on_type')) != None:
-                        rmGroupResult['reading'][-1]['onType'] = onType
-                    if (rStatus := reading.get('rStatus')) != None:
-                        rmGroupResult['reading'][-1]['rStatus'] = rStatus
+            if (freq := misc.find('freq')) != None:
+                result['misc']['freq'] = int(freq.text)
 
-                for meaning in rmGroup.findall('meaning'):
-                    rmGroupResult['meaning'].append({
-                        'value': meaning.text
+            if (radicalNames := misc.findall('rad_name')):
+                result['misc']['radicalName'] = []
+                for radicalName in radicalNames:
+                    result['misc']['radicalName'].append(radicalName.text)
+
+            if (jlpt := misc.find('jlpt')) != None:
+                result['misc']['jlpt'] = int(jlpt.text)
+
+            # Dictionary number
+            if (dicRefs := character.find('dic_number')) != None:
+                result['dictionaryNumber'] = []
+                for dicRef in dicRefs:
+                    result['dictionaryNumber'].append({
+                        'type': dicRef.get('dr_type'),
+                        'value': dicRef.text
+                    })
+                    if (mVol := dicRef.get('m_vol')) != None:
+                        result['dictionaryNumber'][-1]['mVol'] = int(mVol)
+                    if (mPage := dicRef.get('m_page')) != None:
+                        result['dictionaryNumber'][-1]['mPage'] = int(mPage)
+
+            # Query code
+            if (queryCodes := character.find('query_code')) != None:
+                result['queryCode'] = []
+
+                for queryCode in queryCodes:
+                    result['queryCode'].append({
+                        'type': queryCode.get('qc_type'),
+                        'value': queryCode.text
                     })
 
-                    if (language := meaning.get('m_lang')) != None:
-                        rmGroupResult['meaning'][-1]['language'] = language
+                    if (skipMisclass := queryCode.get('skip_misclass')) != None:
+                        result['queryCode'][-1]['skipMisclass'] = skipMisclass
 
-                result['readingMeaning'].append(rmGroupResult)
+            # Reading meaning
+            if (readingMeanings := character.find('reading_meaning')) != None:
+                result['readingMeaning'] = []
 
-            for nanori in readingMeanings.findall('nanori'):
-                result['readingMeaning'].append({
-                    'value': nanori.text
-                })
+                for rmGroup in readingMeanings.findall('rmgroup'):
+                    rmGroupResult = {
+                        'reading': [],
+                        'meaning': []
+                    }
 
-        return result
+                    for reading in rmGroup.findall('reading'):
+                        readingResult = {
+                            'type': reading.get('r_type'),
+                            'value': reading.text
+                        }
 
-    chars = [
-        processCharacter(character)
-        for character in root.findall('character')
-    ]
+                        if (onType := reading.get('on_type')) != None:
+                            readingResult['onType'] = onType
+                        if (rStatus := reading.get('rStatus')) != None:
+                            readingResult['rStatus'] = rStatus
+
+                        # We arent interested in any non-japanese readings of
+                        # kanji, so why include them in our bundle?
+                        if readingResult['type'] in ['ja_on', 'ja_kun']:
+                            rmGroupResult['reading'].append(readingResult)
+
+                    for meaning in rmGroup.findall('meaning'):
+                        rmGroupResult['meaning'].append({
+                            'value': meaning.text
+                        })
+
+                        if (language := meaning.get('m_lang')) != None:
+                            rmGroupResult['meaning'][-1]['language'] = language
+
+                    result['readingMeaning'].append(rmGroupResult)
+
+                for nanori in readingMeanings.findall('nanori'):
+                    result['readingMeaning'].append({
+                        'value': nanori.text
+                    })
+
+            return result
+
+        chars = [
+            processCharacter(character)
+            for character in root.findall('character')
+        ]
 
     with open(targetPath, 'wb') as jsonFile:
         jsonString = json.dumps(

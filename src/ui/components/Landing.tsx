@@ -92,7 +92,7 @@ const Landing: FC = () => {
         {canInstall ? (
           <p>
             To install Kamatama Jisho, just press the big egg down below. The
-            dictionary download is about 10.7MB.
+            dictionary download is about 10.5MB.
           </p>
         ) : (
           <p>
