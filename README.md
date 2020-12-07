@@ -43,7 +43,7 @@ blog](https://www.tofugu.com/) is a great place to start._
 Whe you first navigat to the page, assuming your device is capable of running
 the app, you will be greeted with a big hello and a large pulsating egg.
 
-![large egg](./build/icons/android-chrome-512x512.png)
+![large egg](./public/icons/android-chrome-512x512.png)
 
 If you click the egg, several things will happen:
 
