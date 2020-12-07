@@ -90,10 +90,23 @@ const Landing: FC = () => {
           web!
         </p>
         {canInstall ? (
-          <p>
-            To install Kamatama Jisho, just press the big egg down below. The
-            dictionary download is about 10.5MB.
-          </p>
+          <>
+            <p>
+              To install Kamatama Jisho, just press the big egg down below. The
+              dictionary download is about 10.5MB.
+            </p>
+            <p>
+              The download will likely be quite fast, but the data must then be
+              loaded into the database. This could take a long time. (3-4 mins)
+            </p>
+            <p>
+              For more information, check out{' '}
+              <a href="https://github.com/chrismilson/kamatama#installation">
+                this link
+              </a>
+              .
+            </p>
+          </>
         ) : (
           <p>
             Uh oh! The device you are using is not capable of installing{' '}
