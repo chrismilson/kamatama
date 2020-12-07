@@ -90,9 +90,12 @@ export const addKanjiToDB = async (
             if ('value' in meaningGroupOrNanori) {
               return [meaningGroupOrNanori.value]
             } else {
-              return meaningGroupOrNanori.reading
-                .filter(({ type }) => type === 'ja_kun' || type === 'ja_on')
-                .map(({ value }) => toHiragana(value))
+              return (
+                meaningGroupOrNanori.reading
+                  // We filter this when we build the dictionary
+                  // .filter(({ type }) => type === 'ja_kun' || type === 'ja_on')
+                  .map(({ value }) => toHiragana(value))
+              )
             }
           })
 
