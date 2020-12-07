@@ -37,3 +37,30 @@ dictionary is intended for use by people who have studied some Japanese and can
 at least read kana. If you cannot read kana, [this guide to
 hiragana](https://www.tofugu.com/japanese/learn-hiragana/) on the [tofugu
 blog](https://www.tofugu.com/) is a great place to start._
+
+## Installation
+
+Whe you first navigat to the page, assuming your device is capable of running
+the app, you will be greeted with a big hello and a large pulsating egg.
+
+![large egg](./build/icons/android-chrome-512x512.png)
+
+If you click the egg, several things will happen:
+
+- The dictionary files (~10MB) will download.
+- The dictionary files will be decompressed.
+- The decompressed dictionaries will be inserted into your local
+  [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+  database.
+
+Since the dictionaries are quite large, this will probably take around 3
+minutes.
+
+Please note the following:
+
+- If you close the tab that is installing the data, it will have to be run
+  again. (If the dictionary files had finished downloading, they will have been
+  cached)
+- If you don't close the tab, but navigate away from it (e.g. go to a different
+  tab, or minimise the browser etc.) then your browser may pause the
+  installation.
