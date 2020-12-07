@@ -136,6 +136,25 @@ export const addPhrasesToDB = async (
             }
           }
 
+          for (const meaning of phrase.sense.flatMap(({ glossary }) =>
+            glossary.flatMap(({ value }) => value)
+          )) {
+            const lower = meaning.toLowerCase()
+            /**
+             * Captures each word in the meaning (single quote allowed) except
+             * for the first word.
+             */
+            const wordRegexp = /\b(?!^)[\w']+\b/g
+
+            queryJP.exact.push(lower)
+
+            for (const { index } of Array.from(lower.matchAll(wordRegexp))) {
+              if (index !== undefined) {
+                queryJP.partial.push(lower.substring(index))
+              }
+            }
+          }
+
           return queryJP
         }
       }

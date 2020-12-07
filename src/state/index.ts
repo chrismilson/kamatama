@@ -60,7 +60,9 @@ export class KamatamaJishoStore {
     } else {
       this.query = updateFactory
     }
-    this.fetchPhraseResults(toHiragana(this.query, { passRomaji: true }))
+    this.fetchPhraseResults(
+      toHiragana(this.query.toLowerCase(), { passRomaji: true })
+    )
     this.fetchKanjiResults(toHiragana(this.query, { passRomaji: true }))
   }
 
