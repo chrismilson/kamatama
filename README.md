@@ -64,3 +64,14 @@ Please note the following:
 - If you don't close the tab, but navigate away from it (e.g. go to a different
   tab, or minimise the browser etc.) then your browser may pause the
   installation.
+
+### For Safari Users
+
+If you are using Safari, and you intend to install the app as a
+[PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps), Safari
+does not share local storage between the browser and the PWA versions of the
+app. Please add to your homescreen **first**, and then install the app from
+there.
+
+Safari also has a cache eviction policy, so if you do not use the app for more
+than 30 days, you will have to install the dictionaries again.
