@@ -79,6 +79,7 @@ export class KamatamaJishoStore {
     const tx = db.transaction('allPhrases')
 
     const result = await tx.store.get(sequenceNumber)
+    await tx.done
 
     if (this.entryQueryIDPool === requestID) {
       runInAction(() => {
