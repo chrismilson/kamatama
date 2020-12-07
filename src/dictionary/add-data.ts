@@ -85,8 +85,8 @@ export const addKanjiToDB = async (
       'allKanji',
       {
         storeName: 'kanjiQueryStore',
-        entryHandler: ({ literal, readingMeaning }) => {
-          const readings = readingMeaning?.flatMap((meaningGroupOrNanori) => {
+        entryHandler: ({ literal, readingMeaning, radical }) => {
+          const reading = readingMeaning?.flatMap((meaningGroupOrNanori) => {
             if ('value' in meaningGroupOrNanori) {
               return [meaningGroupOrNanori.value]
             } else {
@@ -95,8 +95,9 @@ export const addKanjiToDB = async (
                 .map(({ value }) => toHiragana(value))
             }
           })
-          if (readings && readings.length > 0) {
-            return { literal, readings }
+
+          if (reading && reading.length > 0) {
+            return { literal, reading, radical }
           }
         }
       }
@@ -184,7 +185,10 @@ export const addDataIfNeeded = async (
   } else {
     kanjiProgress = totalKanji
   }
-  if ((await db.count('allPhrases')) < totalPhrases) {
+  if (
+    process.env.NODE_ENV !== 'development' &&
+    (await db.count('allPhrases')) < totalPhrases
+  ) {
     promises.push(
       addPhrasesToDB(db, (progress) => {
         phraseProgress = progress

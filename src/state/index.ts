@@ -103,7 +103,7 @@ export class KamatamaJishoStore {
     const queryTx = db.transaction('kanjiQueryStore')
 
     await queryTx.store
-      .index('readings')
+      .index('reading')
       .getAll(query)
       .then((matches) =>
         matches.forEach(({ literal }) => allLiterals.add(literal))

@@ -187,6 +187,8 @@ def jmdicToJSON(targetPath, *, minify=True):
 
 
 def kanjidic2ToJSON(targetPath, *, minify=True):
+    radicalsByKanji = getRadicalsByKanji()
+
     with NoEntities('./raw/kanjidic2.xml') as xml:
         tree = ET.parse(xml)
         root = tree.getroot()
@@ -206,12 +208,7 @@ def kanjidic2ToJSON(targetPath, *, minify=True):
                 })
 
             # Radical
-            result['radical'] = []
-            for radValue in character.find('radical'):
-                result['radical'].append({
-                    'type': radValue.get('rad_type'),
-                    'value': radValue.text
-                })
+            result['radical'] = radicalsByKanji.get(result['literal'], [])
 
             # Misc
             result['misc'] = {}
@@ -301,7 +298,8 @@ def kanjidic2ToJSON(targetPath, *, minify=True):
                             'value': meaning.text
                         }
 
-                        if (language := meaning.get('m_lang')) != None:
+                        # if (language := meaning.get('m_lang')) != None:
+                        if meaning.get('m_lang') != None:
                             continue
                             # meaningResult['language'] = language
 
@@ -332,6 +330,22 @@ def kanjidic2ToJSON(targetPath, *, minify=True):
         jsonBytes = jsonString.encode('utf-8')
         encodedBytes = compress(jsonBytes)
         jsonFile.write(encodedBytes)
+
+
+def getRadicalsByKanji():
+    entries = {}
+
+    with open('./raw/kradfile-u.txt') as f:
+        for line in f:
+            if line[0] == '#':
+                continue
+            kanjiString, radicalString = line.split(':')
+            kanji = kanjiString.strip()
+            radicals = radicalString.strip().split(' ')
+
+            entries[kanji] = radicals
+
+    return entries
 
 
 if __name__ == "__main__":

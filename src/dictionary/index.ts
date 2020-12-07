@@ -11,7 +11,8 @@ const initDB = async () => {
         keyPath: 'literal'
       })
 
-      kanjiQueryStore.createIndex('readings', 'readings', { multiEntry: true })
+      kanjiQueryStore.createIndex('reading', 'reading', { multiEntry: true })
+      kanjiQueryStore.createIndex('radical', 'radical', { multiEntry: true })
 
       const allPhrases = db.createObjectStore('allPhrases', {
         keyPath: 'sequenceNumber'
