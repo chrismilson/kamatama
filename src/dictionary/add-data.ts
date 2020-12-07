@@ -120,12 +120,10 @@ export const addPhrasesToDB = async (
           const queryJP: {
             sequenceNumber: number
             exact: string[]
-            kana: string[]
             partial: string[]
           } = {
             sequenceNumber: phrase.sequenceNumber,
             exact: [],
-            kana: [],
             partial: []
           }
 
