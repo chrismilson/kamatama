@@ -1,6 +1,5 @@
 import { IDBPDatabase } from 'idb'
 import { makeAutoObservable, runInAction } from 'mobx'
-import { stringify } from 'querystring'
 import { toHiragana } from 'wanakana'
 import initDB from '../dictionary'
 import { JMEntry } from '../types/JMEntry'
