@@ -7,12 +7,15 @@ const initDB = async () => {
 
       const allKanji = db.createObjectStore('allKanji', { keyPath: 'literal' })
 
+      // Since the radical is already in a form that we can index by, there is
+      // no point adding it to the db twice.
+      allKanji.createIndex('radical', 'radical', { multiEntry: true })
+
       const kanjiQueryStore = db.createObjectStore('kanjiQueryStore', {
         keyPath: 'literal'
       })
 
       kanjiQueryStore.createIndex('reading', 'reading', { multiEntry: true })
-      kanjiQueryStore.createIndex('radical', 'radical', { multiEntry: true })
 
       const allPhrases = db.createObjectStore('allPhrases', {
         keyPath: 'sequenceNumber'

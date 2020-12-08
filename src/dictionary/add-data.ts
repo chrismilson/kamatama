@@ -85,7 +85,7 @@ export const addKanjiToDB = async (
       'allKanji',
       {
         storeName: 'kanjiQueryStore',
-        entryHandler: ({ literal, readingMeaning, radical }) => {
+        entryHandler: ({ literal, readingMeaning }) => {
           const reading = readingMeaning?.flatMap((meaningGroupOrNanori) => {
             if ('value' in meaningGroupOrNanori) {
               return [meaningGroupOrNanori.value]
@@ -100,7 +100,7 @@ export const addKanjiToDB = async (
           })
 
           if (reading && reading.length > 0) {
-            return { literal, reading, radical }
+            return { literal, reading }
           }
         }
       }

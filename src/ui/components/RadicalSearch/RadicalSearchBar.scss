@@ -1,0 +1,58 @@
+.RadicalSearchBar {
+  overflow-y: auto;
+  width: 100%;
+  font-size: 1.5em;
+
+  .radicalGroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:not(:first-child) {
+      padding-top: 0.5em;
+    }
+
+    .strokeCount {
+      z-index: 1;
+      position: sticky;
+      top: 0;
+      text-align: center;
+      width: 1.5em;
+      height: 1.5em;
+
+      background-color: white;
+      display: grid;
+      place-content: center;
+
+      border-bottom-left-radius: 50%;
+      border-bottom-right-radius: 50%;
+    }
+
+    .radicals {
+      display: flex;
+      flex-wrap: wrap;
+
+      justify-content: center;
+
+      .RadicalButton {
+        margin: 0.5em;
+        width: 2em;
+        height: 2em;
+
+        border-radius: 50%;
+        border: solid 1px black;
+
+        outline: none;
+        box-shadow: none;
+        background-color: white;
+
+        display: grid;
+        place-content: center;
+
+        &.selected {
+          background-color: gray;
+        }
+      }
+    }
+  }
+}

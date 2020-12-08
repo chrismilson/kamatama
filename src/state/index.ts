@@ -1,5 +1,6 @@
 import { IDBPDatabase } from 'idb'
 import { makeAutoObservable, runInAction } from 'mobx'
+import { stringify } from 'querystring'
 import { toHiragana } from 'wanakana'
 import initDB from '../dictionary'
 import { JMEntry } from '../types/JMEntry'
@@ -38,6 +39,21 @@ export class KamatamaJishoStore {
   kanjiQueryIDPool: number
   kanjiResults: KanjiCharacter[]
 
+  radicalRequestIDPool: number
+  /** A set of the radicals that the target kanji contains. */
+  radicalQuery: Set<string>
+  /**
+   * Keeps a count of how many of the currently queried radicals are in each
+   * kanji.
+   */
+  radicalMultiset: { [kanji: string]: number }
+  /**
+   * An array containing the kanji whose count in the multiset is equal to the
+   * number of queried radicals. This will be the kanji who contain all queried
+   * radicals.
+   */
+  radicalResult: KanjiCharacter[]
+
   constructor() {
     makeAutoObservable(this)
 
@@ -52,6 +68,11 @@ export class KamatamaJishoStore {
 
     this.kanjiQueryIDPool = 0
     this.kanjiResults = []
+
+    this.radicalRequestIDPool = 0
+    this.radicalQuery = new Set()
+    this.radicalMultiset = {}
+    this.radicalResult = []
   }
 
   setQuery(updateFactory: string | ((priorQuery: string) => string)) {
@@ -86,6 +107,63 @@ export class KamatamaJishoStore {
         this.currentEntry = result
       })
     }
+  }
+
+  async toggleRadicalQuery(radical: string) {
+    let change: number
+    if (this.radicalQuery.has(radical)) {
+      change = -1
+      this.radicalQuery.delete(radical)
+    } else {
+      change = 1
+      this.radicalQuery.add(radical)
+    }
+
+    for (const literal of await this.fetchKanjiByRadical(radical)) {
+      if (!(literal in this.radicalMultiset)) {
+        this.radicalMultiset[literal] = 0
+      }
+
+      this.radicalMultiset[literal] += change
+
+      if (this.radicalMultiset[literal] === 0) {
+        delete this.radicalMultiset[literal]
+      }
+    }
+
+    await this.updateRadicalResults()
+  }
+
+  private async updateRadicalResults() {
+    const target = this.radicalQuery.size
+    if (target === 0) {
+      this.radicalResult = []
+    }
+
+    const literals = Object.entries(this.radicalMultiset)
+      .filter(([kanji, count]) => count === target)
+      .map(([kanji, count]) => kanji)
+
+    const requestID = ++this.radicalRequestIDPool
+    const db = await this.dbPromise
+    const tx = db.transaction('allKanji')
+
+    const result = await Promise.all(
+      literals.map((literal) => tx.store.get(literal))
+    )
+
+    if (requestID === this.radicalRequestIDPool) {
+      runInAction(() => {
+        this.radicalResult = result
+      })
+    }
+  }
+
+  private async fetchKanjiByRadical(radical: string) {
+    const db = await this.dbPromise
+    const tx = db.transaction('allKanji')
+
+    return tx.store.index('radical').getAllKeys(radical) as Promise<string[]>
   }
 
   private async fetchKanjiResults(query: string) {
