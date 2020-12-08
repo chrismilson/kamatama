@@ -2,13 +2,13 @@ import { observer } from 'mobx-react-lite'
 import { FC } from 'react'
 import store from '../../../state'
 import { JMEntry } from '../../../types/JMEntry'
-import './Results.scss'
+import './PhraseResults.scss'
 
 const PhraseResultListItem: FC<JMEntry> = observer(
   ({ sequenceNumber, reading, kanji, sense }) => {
     return (
       <li
-        className="ResultListItem"
+        className="PhraseResultListItem"
         onClick={() => {
           store.setCurrentEntry(sequenceNumber)
         }}
@@ -35,13 +35,11 @@ const PhraseResultListItem: FC<JMEntry> = observer(
 /**
  * A list of the results for the current query.
  */
-const PhraseResultList: FC<{
-  results: JMEntry[]
-}> = observer(() => {
+const PhraseResultList: FC = observer(() => {
   const { phraseResults } = store
 
   return (
-    <ul className="ResultList">
+    <ul className="PhraseResultList">
       {phraseResults.map((phrase) => (
         <PhraseResultListItem key={phrase.sequenceNumber} {...phrase} />
       ))}

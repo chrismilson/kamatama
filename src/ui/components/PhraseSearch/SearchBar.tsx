@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
-import store from '../../state'
-import icon from '../icon.svg'
+import store from '../../../state'
+import icon from '../../icon.svg'
 import './SearchBar.scss'
 
 const SearchBar: FC = observer(() => {
