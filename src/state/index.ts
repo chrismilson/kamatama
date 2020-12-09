@@ -38,6 +38,10 @@ export class KamatamaJishoStore {
   kanjiQueryIDPool: number
   kanjiResults: KanjiCharacter[]
 
+  /**
+   * Indicates whether the user is searching by radical or not.
+   */
+  searchByRadical: boolean
   radicalRequestIDPool: number
   /** A set of the radicals that the target kanji contains. */
   radicalQuery: Set<string>
@@ -68,10 +72,15 @@ export class KamatamaJishoStore {
     this.kanjiQueryIDPool = 0
     this.kanjiResults = []
 
+    this.searchByRadical = true
     this.radicalRequestIDPool = 0
     this.radicalQuery = new Set()
     this.radicalMultiset = {}
     this.radicalResult = []
+
+    if (process.env.NODE_ENV === 'development') {
+      this.toggleRadicalQuery('囗')
+    }
   }
 
   setQuery(updateFactory: string | ((priorQuery: string) => string)) {

@@ -12,7 +12,7 @@ const App: FC = observer(() => {
     <div className="App">
       <Landing />
       <Phrase />
-      {/* <RadicalSearch /> */}
+      <RadicalSearch />
       <PhraseSearch />
     </div>
   )

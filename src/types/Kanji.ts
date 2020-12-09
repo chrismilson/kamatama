@@ -238,7 +238,7 @@ export interface KanjiReadingMeaning {
  */
 export interface KanjiReadingMeaningGroup {
   reading: KanjiReading[]
-  meaninig: KanjiReadingMeaning[]
+  meaning: KanjiReadingMeaning[]
 }
 
 /**

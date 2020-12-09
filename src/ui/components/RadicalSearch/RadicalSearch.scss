@@ -5,8 +5,16 @@
   width: 100%;
   height: 100%;
 
+  background-color: white;
+
   display: flex;
   flex-direction: column;
+
+  transition: top 0.3s;
+
+  &:not(.active) {
+    top: 100%;
+  }
 
   .RadicalSearchBar {
     flex: 1;

@@ -3,4 +3,36 @@
   flex-direction: column;
 
   overflow-y: auto;
+  overflow-x: hidden;
+
+  .RadicalResultListItem {
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid black;
+
+    .literal {
+      min-width: 1.5em;
+      min-height: 1.5em;
+      background-color: #ffb43b;
+      font-size: 2em;
+
+      display: grid;
+      place-content: center;
+    }
+
+    .info {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding-left: 0.5em;
+
+      justify-content: center;
+
+      .reading, .meaning {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
 }

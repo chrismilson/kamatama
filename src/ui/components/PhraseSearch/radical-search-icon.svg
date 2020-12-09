@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1024 1024">
+  <g>
+    <circle id="ring" cx="450" cy="450" r="430" stroke="#50514f" fill="none" stroke-width="30" />
+    <line id="little-stick" x1="754" y1="754" x2="800" y2="800" stroke="#50514f" stroke-width="30" />
+    <path id="handle" stroke="#50514f" stroke-width="10" fill="#ffb43b" d="M 800 800 l 40 -40 l 160 160 l -80 80 l -160 -160 l 80 -80"/>
+    <text id="text" x="120" y="730" font-size="700" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif">字</text>
+  </g>
+</svg>

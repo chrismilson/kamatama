@@ -2,7 +2,9 @@ import { ChangeEvent, FC, useCallback, useEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import store from '../../../state'
 import icon from '../../icon.svg'
+import radicalSearchIcon from './radical-search-icon.svg'
 import './SearchBar.scss'
+import { runInAction } from 'mobx'
 
 const SearchBar: FC = observer(() => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -25,7 +27,16 @@ const SearchBar: FC = observer(() => {
         onChange={handleChange}
         placeholder="Search here..."
       />
-      <button className="Radicals">字</button>
+      <img
+        className="Radicals"
+        src={radicalSearchIcon}
+        alt="search by radical"
+        onClick={() => {
+          runInAction(() => {
+            store.searchByRadical = true
+          })
+        }}
+      />
     </div>
   )
 })

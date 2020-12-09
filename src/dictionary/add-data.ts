@@ -188,10 +188,7 @@ export const addDataIfNeeded = async (
   } else {
     kanjiProgress = totalKanji
   }
-  if (
-    process.env.NODE_ENV !== 'development' &&
-    (await db.count('allPhrases')) < totalPhrases
-  ) {
+  if ((await db.count('allPhrases')) < totalPhrases) {
     promises.push(
       addPhrasesToDB(db, (progress) => {
         phraseProgress = progress
