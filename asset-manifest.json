@@ -1,25 +1,26 @@
 {
   "files": {
-    "main.css": "/kamatama/static/css/main.5d7752b6.chunk.css",
-    "main.js": "/kamatama/static/js/main.61ce8363.chunk.js",
-    "main.js.map": "/kamatama/static/js/main.61ce8363.chunk.js.map",
-    "runtime-main.js": "/kamatama/static/js/runtime-main.1adfba30.js",
-    "runtime-main.js.map": "/kamatama/static/js/runtime-main.1adfba30.js.map",
-    "static/js/2.cf89ec62.chunk.js": "/kamatama/static/js/2.cf89ec62.chunk.js",
-    "static/js/2.cf89ec62.chunk.js.map": "/kamatama/static/js/2.cf89ec62.chunk.js.map",
-    "static/js/3.27af176c.chunk.js": "/kamatama/static/js/3.27af176c.chunk.js",
-    "static/js/3.27af176c.chunk.js.map": "/kamatama/static/js/3.27af176c.chunk.js.map",
+    "main.css": "/kamatama/static/css/main.c3c56e21.chunk.css",
+    "main.js": "/kamatama/static/js/main.86d96868.chunk.js",
+    "main.js.map": "/kamatama/static/js/main.86d96868.chunk.js.map",
+    "runtime-main.js": "/kamatama/static/js/runtime-main.5b719f37.js",
+    "runtime-main.js.map": "/kamatama/static/js/runtime-main.5b719f37.js.map",
+    "static/js/2.e030da6c.chunk.js": "/kamatama/static/js/2.e030da6c.chunk.js",
+    "static/js/2.e030da6c.chunk.js.map": "/kamatama/static/js/2.e030da6c.chunk.js.map",
+    "static/js/3.b8ec1540.chunk.js": "/kamatama/static/js/3.b8ec1540.chunk.js",
+    "static/js/3.b8ec1540.chunk.js.map": "/kamatama/static/js/3.b8ec1540.chunk.js.map",
     "index.html": "/kamatama/index.html",
     "service-worker.js": "/kamatama/service-worker.js",
     "service-worker.js.map": "/kamatama/service-worker.js.map",
-    "static/css/main.5d7752b6.chunk.css.map": "/kamatama/static/css/main.5d7752b6.chunk.css.map",
-    "static/js/2.cf89ec62.chunk.js.LICENSE.txt": "/kamatama/static/js/2.cf89ec62.chunk.js.LICENSE.txt",
-    "static/media/icon.b8f19d44.svg": "/kamatama/static/media/icon.b8f19d44.svg"
+    "static/css/main.c3c56e21.chunk.css.map": "/kamatama/static/css/main.c3c56e21.chunk.css.map",
+    "static/js/2.e030da6c.chunk.js.LICENSE.txt": "/kamatama/static/js/2.e030da6c.chunk.js.LICENSE.txt",
+    "static/media/icon.b8f19d44.svg": "/kamatama/static/media/icon.b8f19d44.svg",
+    "static/media/radical-search-icon.7b3effc6.svg": "/kamatama/static/media/radical-search-icon.7b3effc6.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.1adfba30.js",
-    "static/js/2.cf89ec62.chunk.js",
-    "static/css/main.5d7752b6.chunk.css",
-    "static/js/main.61ce8363.chunk.js"
+    "static/js/runtime-main.5b719f37.js",
+    "static/js/2.e030da6c.chunk.js",
+    "static/css/main.c3c56e21.chunk.css",
+    "static/js/main.86d96868.chunk.js"
   ]
 }
