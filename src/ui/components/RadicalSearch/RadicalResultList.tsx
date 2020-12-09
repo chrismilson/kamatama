@@ -2,11 +2,7 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { FC } from 'react'
 import store from '../../../state'
-import {
-  KanjiCharacter,
-  KanjiReadingMeaning,
-  KanjiReadingMeaningGroup
-} from '../../../types/Kanji'
+import { KanjiCharacter, KanjiReadingMeaningGroup } from '../../../types/Kanji'
 import './RadicalResultList.scss'
 
 const RadicalResultListItem: FC<KanjiCharacter> = ({
