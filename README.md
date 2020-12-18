@@ -110,12 +110,12 @@ Lets try to search for 蟹.
 
 I can see a couple of radicals in there.
 
-I can see 刀:
+I can see 刀, which has 2 strokes:
 
 <!-- ![katana radical search](./readme-assets/radical-search-1.png) -->
 <img alt="katana radical search" src="./readme-assets/radical-search-1.png" width="300" >
 
-And I can see 牛:
+And I can see 牛, which has 4 strokes:
 
 <!-- ![ushi radical search](./readme-assets/radical-search-2.png) -->
 <img alt="ushi radical search" src="./readme-assets/radical-search-2.png" width="300" >
