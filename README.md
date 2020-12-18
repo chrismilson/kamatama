@@ -34,10 +34,10 @@ PWA will be installable and will provide offline functionaloty, straight from
 the browser.
 
 _**NOTE:** Due to the problems associated with romanisation of Japanese (e.g.
-shouldスーパー be supa, suupaa, su-pa- or some combination of these?), this
+should スーパー be supa, suupaa, su-pa- or some combination of these?), this
 dictionary is intended for use by people who have studied some Japanese and can
-at least read kana. If you cannot read kana, [this guide to
-hiragana](https://www.tofugu.com/japanese/learn-hiragana/) on the [tofugu
+at least read hiragana. If you don't know hiragana yet, [this
+guide](https://www.tofugu.com/japanese/learn-hiragana/) on the [tofugu
 blog](https://www.tofugu.com/) is a great place to start._
 
 ## Installation
@@ -51,9 +51,9 @@ If you click the egg, several things will happen:
 
 - The dictionary files (~10MB) will download.
 - The dictionary files will be decompressed.
-- The decompressed dictionaries will be inserted into your local
-  [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
-  database.
+- The decompressed dictionaries will be inserted into your
+  [local
+  database](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API).
 
 Since the dictionaries are quite large, this will probably take around 3
 minutes.
@@ -72,8 +72,52 @@ Please note the following:
 If you are using Safari, and you intend to install the app as a
 [PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps), Safari
 does not share local storage between the browser and the PWA versions of the
-app. Please add to your homescreen **first**, and then install the app from
+app. Please add to your homescreen **_first_**, and then install the app from
 there.
 
 Safari also has a cache eviction policy, so if you do not use the app for more
 than 30 days, you will have to install the dictionaries again.
+
+## Usage
+
+Google translate is great for daily use, but often has trouble translating set
+phrases or giving multiple opinions on translation.
+
+### Japanese and English Phrases
+
+You can search for both Japanese words and english words in the same place!
+
+<table>
+<tr>
+<td>
+
+![reading search example](./readme-assets/phrase-search.png)
+</td>
+<td>
+
+![meaning search example](./readme-assets/meaning-search.png)
+</td>
+</tr>
+</table>
+
+### Kanji Radical search
+
+Kamatama makes use of the
+[`kradfile-u`](http://ftp.monash.edu.au/pub/nihongo/kradfile-u-hdr) kanji
+radical decompositions to search kanji by their radicals.
+
+Lets try to search for 蟹.
+
+I can see a couple of radicals in there.
+
+I can see 刀:
+
+![katana radical search](./readme-assets/radical-search-1.png)
+
+And I can see 牛:
+
+![ushi radical search](./readme-assets/radical-search-2.png)
+
+Just scroll down a bit...
+
+![crab kanji result](./readme-assets/radical-search-3.png)
