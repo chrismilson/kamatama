@@ -112,12 +112,15 @@ I can see a couple of radicals in there.
 
 I can see 刀:
 
-![katana radical search](./readme-assets/radical-search-1.png)
+<!-- ![katana radical search](./readme-assets/radical-search-1.png) -->
+<img alt="katana radical search" src="./readme-assets/radical-search-1.png" width="300" >
 
 And I can see 牛:
 
-![ushi radical search](./readme-assets/radical-search-2.png)
+<!-- ![ushi radical search](./readme-assets/radical-search-2.png) -->
+<img alt="ushi radical search" src="./readme-assets/radical-search-2.png" width="300" >
 
 Just scroll down a bit...
 
-![crab kanji result](./readme-assets/radical-search-3.png)
+<!-- ![crab kanji result](./readme-assets/radical-search-3.png) -->
+<img alt="crab kanji result" src="./readme-assets/radical-search-3.png" width="300" >
